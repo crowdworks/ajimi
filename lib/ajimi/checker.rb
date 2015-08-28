@@ -1,13 +1,17 @@
 module Ajimi
   class Checker
 
-    def initialize(server1, server2)
-      @server1 = server1
-      @server2 = server2
+    def initialize(source, target, root)
+      @source = source
+      @target = target
+      @root = root
     end
     
     def check
-      @server1.data == @server2.data
+      source_files = @source.files(@root)
+      target_files = @target.files(@root)
+
+      source_files[0] == target_files[0]
     end
 
   end

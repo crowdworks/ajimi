@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ajimi do
   before do
-    @ajimi = Ajimi::Controller.new
+    @ajimi = Ajimi::Client.new
   end
 
   describe "#check" do

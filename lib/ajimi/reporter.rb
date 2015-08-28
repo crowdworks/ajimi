@@ -7,7 +7,11 @@ module Ajimi
     end
 
     def report
-      puts "no diff"
+      if @result
+        puts "no diff"
+      else
+        puts "some diff"
+      end
     end
 
   end  

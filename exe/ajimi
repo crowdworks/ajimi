@@ -2,4 +2,4 @@
 
 require 'ajimi'
 
-Ajimi::Controller.new.run
+Ajimi::Client.new.run

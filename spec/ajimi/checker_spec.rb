@@ -2,35 +2,25 @@ require 'spec_helper'
 
 describe Ajimi::Checker do
   before do
-    @server1 = Ajimi::Server.new(
-      host: "server1.example.com",
-      user: "minamijoyo",
-      key: "~/.ssh/id_rsa"
+    @source = Ajimi::Server.new(
+        host: "sandbox-app03b",
+        user: "morita",
+        key: "~/.ssh/id_rsa"
     )
-    @server2 = Ajimi::Server.new(
-      host: "server2.example.com",
-      user: "minamijoyo",
-      key: "~/.ssh/id_rsa"
+    @target = Ajimi::Server.new(
+        host: "sandbox-webapp",
+        user: "ec2-user",
+        key: "~/.ssh/MasayukiMORITA.pem"
     )
-    @checker = Ajimi::Checker.new(@server1, @server2)
+    @root = "/root"
+    @checker = Ajimi::Checker.new(@source, @target, @root)
   end
 
   describe "#check" do
     context "when 2 servers have same data" do
       it "returns true" do
-        @server1.data("hoge")
-        @server2.data("hoge")
         result = @checker.check
         expect(result).to be true
-      end
-    end
-
-    context "when 2 servers have different data" do
-      it "returns false" do
-        @server1.data("hoge")
-        @server2.data("fuga")
-        result = @checker.check
-        expect(result).to be false
       end
     end
 

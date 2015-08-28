@@ -4,22 +4,20 @@ require 'ajimi/reporter'
 require 'ajimi/server'
 
 module Ajimi
-  class Controller
+  class Client
     def check
-      @server1 = Ajimi::Server.new(
-        host: "server1.example.com",
-        user: "minamijoyo",
+      @source = Ajimi::Server.new(
+        host: "sandbox-app03b",
+        user: "morita",
         key: "~/.ssh/id_rsa"
       )
-      @server2 = Ajimi::Server.new(
-        host: "server2.example.com",
-        user: "minamijoyo",
-        key: "~/.ssh/id_rsa"
+      @target = Ajimi::Server.new(
+        host: "sandbox-webapp",
+        user: "ec2-user",
+        key: "~/.ssh/MasayukiMORITA.pem"
       )
-      
-      @server1.data("hoge")
-      @server2.data("hoge")
-      @checker = Checker.new(@server1,@server2)
+      @root = "/root"
+      @checker = Checker.new(@source, @target, @root)
       result = @checker.check
     end
     
