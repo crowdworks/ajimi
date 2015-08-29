@@ -3,10 +3,10 @@ require 'spec_helper'
 describe "Ajimi::Diff" do
   
   describe "#entries" do
-    let(:entry1) { Ajimi::Server::Entry.parse("path1, mode1, user1, group1, bytes1") }
-    let(:entry2) { Ajimi::Server::Entry.parse("path2, mode2, user2, group2, bytes2") }
-    let(:entry3) { Ajimi::Server::Entry.parse("path3, mode3, user3, group3, bytes3") }
-    let(:entry3_changed) { Ajimi::Server::Entry.parse("path3, mode3, user3, group3, bytes3_changed") }
+    let(:entry1) { make_entry("path1, mode1, user1, group1, bytes1") }
+    let(:entry2) { make_entry("path2, mode2, user2, group2, bytes2") }
+    let(:entry3) { make_entry("path3, mode3, user3, group3, bytes3") }
+    let(:entry3_changed) { make_entry("path3, mode3, user3, group3, bytes3_changed") }
 
     let(:diffs) { Ajimi::Diff.diff_entries(source_entries, target_entries) }
 

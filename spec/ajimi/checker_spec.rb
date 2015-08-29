@@ -5,9 +5,9 @@ describe Ajimi::Checker do
     let(:source) { Ajimi::Server.new }
     let(:target) { Ajimi::Server.new }
     let(:checker) { Ajimi::Checker.new(source, target, "/") }
-    let(:entry1) { Ajimi::Server::Entry.parse("path1, mode1, user1, group1, bytes1") }
-    let(:entry2) { Ajimi::Server::Entry.parse("path2, mode2, user2, group2, bytes2") }
-    let(:entry2_changed) { Ajimi::Server::Entry.parse("path2, mode2, user2, group2, bytes2_changed") }
+    let(:entry1) { make_entry("path1, mode1, user1, group1, bytes1") }
+    let(:entry2) { make_entry("path2, mode2, user2, group2, bytes2") }
+    let(:entry2_changed) { make_entry("path2, mode2, user2, group2, bytes2_changed") }
 
     context "when 2 servers have same entries" do
       it "returns true" do

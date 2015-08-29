@@ -81,12 +81,12 @@ describe "Ajimi::Server::Entry" do
     ) }
 
     it "returns parsed entry instance" do
-      parsed = Ajimi::Server::Entry.parse(line)
+      parsed = make_entry(line)
       expect(parsed).to eq entry
     end
     
     it "returns original string" do
-      expect(Ajimi::Server::Entry.parse(line).to_s).to eq line
+      expect(make_entry(line).to_s).to eq line
     end
   end
 end
