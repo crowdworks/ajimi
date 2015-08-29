@@ -1,5 +1,5 @@
 require 'ajimi/server/ssh'
-require 'ajimi/server/file'
+require 'ajimi/server/entry'
 
 module Ajimi
   class Server
@@ -20,8 +20,8 @@ module Ajimi
       stdout.split(/\n/).map {|line| line.chomp }
     end
 
-    def files(dir)
-      @files ||= find(dir).map{ |line| Ajimi::Server::File.parse(line) }
+    def entries(dir)
+      @entries ||= find(dir).map{ |line| Ajimi::Server::Entry.parse(line) }
     end
 
   end

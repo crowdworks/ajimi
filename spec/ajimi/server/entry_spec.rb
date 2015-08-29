@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe "Ajimi::Server::File" do
+describe "Ajimi::Server::Entry" do
 
   describe "#==" do
-    let(:source) { Ajimi::Server::File.new(
+    let(:source) { Ajimi::Server::Entry.new(
       path: "path", mode: "mode", user: "user", group: "group", bytes: "bytes"
     ) }
 
     context "when same params" do
-      let(:same) { Ajimi::Server::File.new(
+      let(:same) { Ajimi::Server::Entry.new(
         path: "path", mode: "mode", user: "user", group: "group", bytes: "bytes"
       ) }
       it "is considered same as other" do
@@ -17,19 +17,19 @@ describe "Ajimi::Server::File" do
     end
     
     context "when different params" do
-      let(:path_changed) { Ajimi::Server::File.new(
+      let(:path_changed) { Ajimi::Server::Entry.new(
         path: "path_changed", mode: "mode", user: "user", group: "group", bytes: "bytes"
       ) }
-      let(:mode_changed) { Ajimi::Server::File.new(
+      let(:mode_changed) { Ajimi::Server::Entry.new(
         path: "path", mode: "mode_changed", user: "user", group: "group", bytes: "bytes"
       ) }
-      let(:user_changed) { Ajimi::Server::File.new(
+      let(:user_changed) { Ajimi::Server::Entry.new(
         path: "path", mode: "mode", user: "user_changed", group: "group", bytes: "bytes"
       ) }
-      let(:group_changed) { Ajimi::Server::File.new(
+      let(:group_changed) { Ajimi::Server::Entry.new(
         path: "path", mode: "mode", user: "user", group: "group_changed", bytes: "bytes"
       ) }
-      let(:bytes_changed) { Ajimi::Server::File.new(
+      let(:bytes_changed) { Ajimi::Server::Entry.new(
         path: "path", mode: "mode", user: "user", group: "group", bytes: "bytes_changed"
       ) }
 
@@ -58,7 +58,7 @@ describe "Ajimi::Server::File" do
 
   describe "#to_s" do
     let(:line) { "/home/ec2-user, drwx------, ec2-user, ec2-group, 4096" }
-    let(:file) { Ajimi::Server::File.new(
+    let(:entry) { Ajimi::Server::Entry.new(
       path: "/home/ec2-user",
       mode: "drwx------",
       user: "ec2-user",
@@ -66,13 +66,13 @@ describe "Ajimi::Server::File" do
       bytes: "4096"
     ) }
     it "returns string joined with comma" do
-      expect(file.to_s). to eq line
+      expect(entry.to_s). to eq line
     end
     
   end
   describe ".parse" do
     let(:line) { "/home/ec2-user, drwx------, ec2-user, ec2-group, 4096" }
-    let(:file) { Ajimi::Server::File.new(
+    let(:entry) { Ajimi::Server::Entry.new(
       path: "/home/ec2-user",
       mode: "drwx------",
       user: "ec2-user",
@@ -80,13 +80,13 @@ describe "Ajimi::Server::File" do
       bytes: "4096"
     ) }
 
-    it "returns parsed File instance" do
-      parsed = Ajimi::Server::File.parse(line)
-      expect(parsed).to eq file
+    it "returns parsed entry instance" do
+      parsed = Ajimi::Server::Entry.parse(line)
+      expect(parsed).to eq entry
     end
     
     it "returns original string" do
-      expect(Ajimi::Server::File.parse(line).to_s).to eq line
+      expect(Ajimi::Server::Entry.parse(line).to_s).to eq line
     end
   end
 end

@@ -1,6 +1,6 @@
 module Ajimi
   class Server
-    class File
+    class Entry
       attr_accessor :path, :mode, :user, :group, :bytes
       
       def initialize(params)
@@ -26,7 +26,7 @@ module Ajimi
       class << self
         def parse(line)
           path, mode, user, group, bytes = line.chomp.split(', ')
-          Ajimi::Server::File.new(
+          Ajimi::Server::Entry.new(
             path: path,
             mode: mode,
             user: user,

@@ -22,18 +22,18 @@ describe "Ajimi::Server" do
     end
   end
   
-  describe "#file" do
+  describe "#entries" do
     let(:find_return) { [
       "/home/ec2-user, drwx------, ec2-user, ec2-user, 4096",
-      "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705",      
+      "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705",
     ] }
     
-    it "return parsed files" do
+    it "return parsed entries" do
       server = Ajimi::Server.new
       allow(server).to receive(:find).and_return(find_return)
-      files = server.files("/home/ec2-user")
-      expect(files[0].path).to eq "/home/ec2-user"
-      expect(files[1].path).to eq "/home/ec2-user/.bash_history"
+      entries = server.entries("/home/ec2-user")
+      expect(entries[0].path).to eq "/home/ec2-user"
+      expect(entries[1].path).to eq "/home/ec2-user/.bash_history"
 
     end
   end

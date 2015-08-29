@@ -8,10 +8,10 @@ module Ajimi
     end
     
     def check
-      source_files = @source.files(@root)
-      target_files = @target.files(@root)
+      source_entries = @source.entries(@root)
+      target_entries = @target.entries(@root)
 
-      source_files[0] == target_files[0]
+      source_entries[0] == target_entries[0]
     end
 
   end
