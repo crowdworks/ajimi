@@ -4,6 +4,8 @@ module Ajimi
   class Checker
     include Ajimi::Diff
 
+    attr_accessor :diffs, :result
+
     def initialize(source, target, root)
       @source = source
       @target = target
@@ -15,7 +17,7 @@ module Ajimi
       target_entries = @target.entries(@root)
 
       @diffs = diff_entries(source_entries, target_entries)
-      @diffs.empty?
+      @result = @diffs.empty?
     end
 
   end

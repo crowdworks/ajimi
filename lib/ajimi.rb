@@ -6,7 +6,8 @@ require 'ajimi/diff'
 
 module Ajimi
   class Client
-    
+    attr_accessor :checker, :reporter
+
     def initialize
       @source = Ajimi::Server.new(
         host: "sandbox-app03b",
@@ -21,15 +22,20 @@ module Ajimi
       @root = "/root"
     end
     
-    def check(checker = nil)
-      @checker = checker || Checker.new(@source, @target, @root)
-      result = @checker.check
+    def check
+      @checker ||= Checker.new(@source, @target, @root)
+      @checker.check
+    end
+
+    def report(out)
+      @reporter ||= Reporter.new(@checker, out)
+      @reporter.report
     end
     
     def run(out = STDOUT)
       result = check
-      @reporter = Reporter.new(result, out)
-      @reporter.report
+      report(out)
+      result
     end
   end
 

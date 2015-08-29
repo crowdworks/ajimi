@@ -1,16 +1,22 @@
 module Ajimi
   class Reporter
 
-    def initialize(result, out = STDOUT)
-      @result = result
+    def initialize(checker, out = STDOUT)
+      @checker = checker
       @out = out
     end
 
     def report
-      if @result
-        puts "no diff"
+      if @checker.result
+        puts "no diffs"
+        true
       else
-        puts "some diff"
+        @checker.diffs.each do |diff|
+          diff.each do |change|
+            puts change.action + " " + change.element.to_s
+          end
+        end
+        false
       end
     end
 
