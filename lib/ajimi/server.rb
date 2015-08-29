@@ -17,7 +17,7 @@ module Ajimi
     
     def find(dir)
       stdout = command_exec("sudo find #{dir} -ls | awk  '{printf \"%s, %s, %s, %s, %s\\n\", \$11, \$3, \$5, \$6, \$7}'")
-      stdout.split(/\n/).map {|line| line.chomp }
+      stdout.split(/\n/).map {|line| line.chomp }.sort
     end
 
     def entries(dir)

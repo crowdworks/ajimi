@@ -2,6 +2,7 @@ require "ajimi/version"
 require 'ajimi/checker'
 require 'ajimi/reporter'
 require 'ajimi/server'
+require 'ajimi/diff'
 
 module Ajimi
   class Client

@@ -4,8 +4,8 @@ describe "Ajimi::Server" do
 
   describe "#find" do
     let(:dummy_response) {
-      "/home/ec2-user, drwx------, ec2-user, ec2-user, 4096\n" +
-      "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705\n"
+      "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705\n" +
+      "/home/ec2-user, drwx------, ec2-user, ec2-user, 4096\n"
     }
 
     let(:ret) { [
@@ -13,7 +13,7 @@ describe "Ajimi::Server" do
       "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705"
     ] }
     
-    it "returns Array of line" do
+    it "returns sorted Array of line" do
       backend_mock = double('dummy backend')
       expect(backend_mock).to receive(:command_exec).and_return(dummy_response)
       server = Ajimi::Server.new
