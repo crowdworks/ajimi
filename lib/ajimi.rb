@@ -5,7 +5,8 @@ require 'ajimi/server'
 
 module Ajimi
   class Client
-    def check
+    
+    def initialize
       @source = Ajimi::Server.new(
         host: "sandbox-app03b",
         user: "morita",
@@ -17,7 +18,10 @@ module Ajimi
         key: "~/.ssh/MasayukiMORITA.pem"
       )
       @root = "/root"
-      @checker = Checker.new(@source, @target, @root)
+    end
+    
+    def check(checker = nil)
+      @checker = checker || Checker.new(@source, @target, @root)
       result = @checker.check
     end
     
