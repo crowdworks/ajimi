@@ -6,15 +6,15 @@ module Ajimi
 
     attr_accessor :diffs, :result
 
-    def initialize(source, target, root)
+    def initialize(source, target, check_root_path)
       @source = source
       @target = target
-      @root = root
+      @check_root_path = check_root_path
     end
     
     def check
-      source_entries = @source.entries(@root)
-      target_entries = @target.entries(@root)
+      source_entries = @source.entries(@check_root_path)
+      target_entries = @target.entries(@check_root_path)
 
       @diffs = diff_entries(source_entries, target_entries)
       @result = @diffs.empty?

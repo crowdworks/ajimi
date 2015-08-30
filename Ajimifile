@@ -1,0 +1,14 @@
+# Ajimi configuration file
+
+# source setting
+source_host "sandbox-app03b"
+source_user "morita"
+source_key "~/.ssh/id_rsa"
+
+# target setting
+target_host "sandbox-webapp"
+target_user "ec2-user"
+target_key "~/.ssh/MasayukiMORITA.pem"
+
+# check setting
+check_root_path "/root"

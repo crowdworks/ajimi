@@ -2,22 +2,23 @@ module Ajimi
   class Client
     attr_accessor :checker, :reporter
 
-    def initialize
+    def initialize(config = {})
+      @config = config
       @source = Ajimi::Server.new(
-        host: "sandbox-app03b",
-        user: "morita",
-        key: "~/.ssh/id_rsa"
+        host: @config[:source_host],
+        user: @config[:source_user],
+        key: @config[:source_key]
       )
       @target = Ajimi::Server.new(
-        host: "sandbox-webapp",
-        user: "ec2-user",
-        key: "~/.ssh/MasayukiMORITA.pem"
+        host: @config[:target_host],
+        user: @config[:target_user],
+        key: @config[:target_key]
       )
-      @root = "/root"
+      @check_root_path = @config[:check_root_path]
     end
     
     def check
-      @checker ||= Checker.new(@source, @target, @root)
+      @checker ||= Checker.new(@source, @target, @check_root_path)
       @checker.check
     end
 
