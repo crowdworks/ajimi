@@ -24,8 +24,8 @@ module Ajimi
         stderr = ""
         net_ssh.start(@host, @user, ssh_options) do |session|
           session.exec!(cmd) do |channel, stream, data|
-            stdout += data if stream == :stdout
-            stderr += data if stream == :stderr
+            stdout << data if stream == :stdout
+            stderr << data if stream == :stderr
           end
         end
         stdout
