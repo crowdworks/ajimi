@@ -100,5 +100,15 @@ describe "Ajimi::Diff" do
       end
     end
 
+    context "when ignore list has unknown type" do
+      let(:source_entries) { [source_entry1, source_entry3, source_entry4] }
+      let(:target_entries) { [target_entry1, target_entry2, target_entry3_changed] }
+      let(:ignore_list) { [1, 2, 3] }
+
+      it "raise_error TypeError" do
+        expect{ Ajimi::Diff.diff_entries(source_entries, target_entries, ignore_list) }.to raise_error(TypeError)
+      end
+    end
+
   end
 end
