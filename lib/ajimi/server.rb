@@ -6,7 +6,11 @@ module Ajimi
     def initialize(options = {})
       @options = options
     end
-    
+
+    def host
+      @options[:host]
+    end
+
     def backend
       @backend ||= Ajimi::Server::Ssh.new(@options)
     end
@@ -22,6 +26,11 @@ module Ajimi
 
     def entries(dir)
       @entries ||= find(dir).map{ |line| Ajimi::Server::Entry.parse(line) }
+    end
+
+    def cat(file)
+      stdout = command_exec("sudo cat #{file}")
+      stdout.split(/\n/).map {|line| line.chomp }
     end
 
   end

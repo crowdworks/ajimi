@@ -18,5 +18,6 @@ ignore_list [
   %r|\A/root/\.gem/?.*|,
   "/root/.lesshst",
   "/root/.viminfo",
-  "/root/du.log"
+  "/root/du.log",
+  ["/root/.ssh/authorized_keys", /Please login as the user/]
 ]
