@@ -15,10 +15,11 @@ module Ajimi
         key: @config[:target_key]
       )
       @check_root_path = @config[:check_root_path]
+      @ignore_list = @config[:ignore_list]
     end
     
     def check
-      @checker ||= Checker.new(@source, @target, @check_root_path)
+      @checker ||= Checker.new(@source, @target, @check_root_path, @ignore_list)
       @checker.check
     end
 

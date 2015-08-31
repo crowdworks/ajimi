@@ -11,6 +11,10 @@ target_host "target_host_value"
 target_user "target_user_value"
 target_key "target_key_value"
 check_root_path "check_root_path_value"
+ignore_list [
+  "/path_to_ignore1",
+  "/path_to_ignore2"
+]
     AJIMIFILE
     }
 
@@ -21,7 +25,8 @@ check_root_path "check_root_path_value"
       target_host: "target_host_value",
       target_user: "target_user_value",
       target_key: "target_key_value",
-      check_root_path: "check_root_path_value"
+      check_root_path: "check_root_path_value",
+      ignore_list: ["/path_to_ignore1", "/path_to_ignore2"]
     } }
 
     before do

@@ -45,5 +45,9 @@ module Ajimi
       @config[:check_root_path] = path
     end
 
+    def ignore_list(array)
+      @config[:ignore_list] = array
+    end
+
   end
 end

@@ -6,17 +6,18 @@ module Ajimi
 
     attr_accessor :diffs, :result
 
-    def initialize(source, target, check_root_path)
+    def initialize(source, target, check_root_path, ignore_list = [])
       @source = source
       @target = target
       @check_root_path = check_root_path
+      @ignore_list = ignore_list
     end
     
     def check
       source_entries = @source.entries(@check_root_path)
       target_entries = @target.entries(@check_root_path)
 
-      @diffs = diff_entries(source_entries, target_entries)
+      @diffs = diff_entries(source_entries, target_entries, @ignore_list)
       @result = @diffs.empty?
     end
 
