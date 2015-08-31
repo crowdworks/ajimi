@@ -23,6 +23,31 @@ describe Ajimi::Checker do
         allow(target).to receive(:entries).and_return([entry1, entry2_changed])
         expect(checker.check).to be false
       end
+
+      it "returns diff position" do
+        allow(source).to receive(:command_exec).and_return(<<-SOURCE_STDOUT
+/root, dr-xr-x---, root, root, 4096
+/root/.bash_history, -rw-------, root, root, 4847
+/root/.bash_logout, -rw-r--r--, root, root, 18
+/root/.bash_profile, -rw-r--r--, root, root, 176
+/root/.bashrc, -rw-r--r--, root, root, 176
+/root/.cshrc, -rw-r--r--, root, root, 100
+        SOURCE_STDOUT
+        )
+        allow(target).to receive(:command_exec).and_return(<<-TARGET_STDOUT
+/root, dr-xr-x---, root, root, 4096
+/root/.bash_logout, -rw-r--r--, root, root, 18
+/root/.bash_profile, -rw-r--r--, root, root, 176
+/root/.bashrc, -rw-r--r--, root, root, 176
+/root/.cshrc, -rw-r--r--, root, root, 100
+/root/.ssh, drwx------, root, root, 4096
+        TARGET_STDOUT
+        )
+        checker.check
+        expect(checker.diffs.first.first.position).to be 1
+        expect(checker.diffs.last.first.position).to be 5
+
+      end
     end
 
   end

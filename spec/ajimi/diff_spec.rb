@@ -2,17 +2,21 @@ require 'spec_helper'
 
 describe "Ajimi::Diff" do
   
-  describe "#entries" do
-    let(:entry1) { make_entry("path1, mode1, user1, group1, bytes1") }
-    let(:entry2) { make_entry("path2, mode2, user2, group2, bytes2") }
-    let(:entry3) { make_entry("path3, mode3, user3, group3, bytes3") }
-    let(:entry3_changed) { make_entry("path3, mode3, user3, group3, bytes3_changed") }
+  describe "#diff_entries" do
+    let(:source_entry1) { make_entry("/root, dr-xr-x---, root, root, 4096") }
+    let(:source_entry2) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
+    let(:source_entry3) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 18") }
+
+    let(:target_entry1) { make_entry("/root, dr-xr-x---, root, root, 4096") }
+    let(:target_entry2) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
+    let(:target_entry3) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 18") }
+    let(:target_entry3_changed) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 118") }
 
     let(:diffs) { Ajimi::Diff.diff_entries(source_entries, target_entries) }
 
     context "when source and target have same entry" do
-      let(:source_entries) { [entry1] }
-      let(:target_entries) { [entry1] }
+      let(:source_entries) { [source_entry1, source_entry2, source_entry3] }
+      let(:target_entries) { [target_entry1, target_entry2, target_entry3] }
 
       it "has empty list" do
         expect(diffs.empty?).to be true
@@ -20,36 +24,36 @@ describe "Ajimi::Diff" do
     end
     
     context "when target has entry2" do
-      let(:source_entries) { [entry1] }
-      let(:target_entries) { [entry1, entry2] }
+      let(:source_entries) { [source_entry1] }
+      let(:target_entries) { [target_entry1, target_entry2] }
 
       it "has + entry" do
         expect(diffs.first.first.action).to eq "+"
-        expect(diffs.first.first.element).to eq entry2
+        expect(diffs.first.first.element).to eq target_entry2
       end
     end
 
-    context "when target does not have entry3" do
-      let(:source_entries) { [entry1, entry3] }
-      let(:target_entries) { [entry1] }
+    context "when target does not have entry2" do
+      let(:source_entries) { [source_entry1, source_entry2, source_entry3] }
+      let(:target_entries) { [target_entry1, target_entry3] }
 
       it "has - entry" do
         expect(diffs.first.first.action).to eq "-"
-        expect(diffs.first.first.element).to eq entry3
+        expect(diffs.first.first.element).to eq source_entry2
       end
     end
 
     context "when entry3 has changed" do
-      let(:source_entries) { [entry1, entry3] }
-      let(:target_entries) { [entry1, entry3_changed] }
+      let(:source_entries) { [source_entry1, source_entry3] }
+      let(:target_entries) { [target_entry1, target_entry3_changed] }
 
       it "has - entry" do
         expect(diffs.first.first.action).to eq "-"
-        expect(diffs.first.first.element).to eq entry3
+        expect(diffs.first.first.element).to eq source_entry3
       end
       it "has + entry" do
         expect(diffs.first.last.action).to eq "+"
-        expect(diffs.first.last.element).to eq entry3_changed
+        expect(diffs.first.last.element).to eq target_entry3_changed
       end
 
     end

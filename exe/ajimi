@@ -2,5 +2,5 @@
 
 require 'ajimi'
 
-config = Ajimi::Config.load({}, './Ajimifile')
+config = Ajimi::Config.load('./Ajimifile')
 Ajimi::Client.new(config).run

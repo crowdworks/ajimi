@@ -13,7 +13,7 @@ module Ajimi
       else
         @checker.diffs.each do |diff|
           diff.each do |change|
-            puts change.action + " " + change.element.to_s
+            puts change.action + " " + change.position.to_s + " " + change.element.to_s
           end
         end
         false

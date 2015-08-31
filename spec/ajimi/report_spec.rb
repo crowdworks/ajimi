@@ -26,9 +26,9 @@ describe "Ajimi::Reporter" do
       it "puts some diffs" do
         allow(checker).to receive(:diffs).and_return(diffs)
         report_output =
-          "- " + entry2.to_s + "\n" +
-          "- " + entry3.to_s + "\n" +
-          "+ " + entry3_changed.to_s + "\n"
+          "- " + "1 " + entry2.to_s + "\n" +
+          "- " + "2 " + entry3.to_s + "\n" +
+          "+ " + "1 " + entry3_changed.to_s + "\n"
         expect{ reporter.report }.to output(report_output).to_stdout
       end
     end
