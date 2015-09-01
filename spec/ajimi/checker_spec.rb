@@ -3,20 +3,23 @@ require 'spec_helper'
 describe Ajimi::Checker do
   let(:source) { Ajimi::Server.new }
   let(:target) { Ajimi::Server.new }
-  let(:config) { Ajimi::Config.new }
+  let(:config) { {
+    source_host: "source_host_value",
+    source_user: "source_user_value",
+    source_key: "source_key_value",
+    target_host: "target_host_value",
+    target_user: "target_user_value",
+    target_key: "target_key_value",
+    check_root_path: "check_root_path_value",
+    ignore_paths: ["/path_to_ignore1", "/path_to_ignore2"],
+    ignore_contents: ({"/path_to_content" => /ignore_pattern/})
+  } }
   let(:checker) { Ajimi::Checker.new(config) }
   let(:source) { checker.source }
   let(:target) { checker.target }
 
   before do
-    config.source_host "source_host_value"
-    config.source_user "source_user_value"
-    config.source_key "source_key_value"
-    config.target_host "target_host_value"
-    config.target_user "target_user_value"
-    config.target_key "target_key_value"
-    config.check_root_path "check_root_path_value"
-    config.ignore_list ["/path_to_ignore1", "/path_to_ignore2"]
+
   end
 
   describe "#check" do
@@ -73,7 +76,11 @@ describe Ajimi::Checker do
   let(:source_find4) { "/root/.ssh/authorized_keys, -rw-------, root, root, 1099" }
 
   let(:target_find1) { "/root, dr-xr-x---, root, root, 4096" }
+  let(:target_find1_changed) { "/root, dr-xr-x---, hoge, root, 4096" }
+
   let(:target_find2) { "/root/.bash_history, -rw-------, root, root, 4847" }
+  let(:target_find2_changed) { "/root/.bash_history, -rw-------, root, hoge, 4847" }
+
   let(:target_find3) { "/root/.bash_logout, -rw-r--r--, root, root, 18" }
   let(:target_find3_changed) { "/root/.bash_logout, -rw-r--r--, root, root, 118" }
 
@@ -83,11 +90,12 @@ describe Ajimi::Checker do
   let(:source_entry4) { make_entry(source_find4) }
 
   let(:target_entry1) { make_entry(target_find1) }
+  let(:target_entry1_changed) { make_entry(target_find1_changed) }
   let(:target_entry2) { make_entry(target_find2) }
   let(:target_entry3) { make_entry(target_find3) }
   let(:target_entry3_changed) { make_entry(target_find3_changed) }
 
-  describe "#raw_diff_entries" do
+  describe "#diff_entries" do
 
     let(:diffs) { checker.diff_entries(source_find, target_find) }
 
@@ -137,54 +145,68 @@ describe Ajimi::Checker do
 
   end
 
-  describe "#diff_entries" do
-    context "when ignore list is empty" do
+  describe "#ignore_paths" do
+    let(:diffs) { checker.diff_entries(source_find, target_find) }
+    let(:ignored) { checker.ignore_paths(diffs, ignore_paths) }
+    context "when ignore_paths is empty" do
       let(:source_find) { [source_find1] }
       let(:target_find) { [target_find1, target_find2] }
-      let(:ignore_list) { [] }
-      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
+      let(:ignore_paths) { [] }
 
-      it "has + entry" do
-        expect(diffs.first.first.action).to eq "+"
-        expect(diffs.first.first.element).to eq target_entry2
+      it "return empty list" do
+        expect(ignored.empty?).to eq true
       end
     end
 
     context "when ignore list has strings" do
       let(:source_find) { [source_find1, source_find3] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_list) { ["/hoge", "/root/.bash_logout"] }
-      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
+      let(:ignore_paths) { ["/hoge", "/root/.bash_logout"] }
 
-      it "filters ignore_list" do
-        expect(diffs.first.size).to eq 1
-        expect(diffs.first.first.action).to eq "+"
-        expect(diffs.first.first.element).to eq target_entry2
+      it "returns ignored list using ==" do
+        expect(ignored).to eq ["/root/.bash_logout"]
       end
     end
 
     context "when ignore list has regexp" do
       let(:source_find) { [source_find1, source_find3, source_find4] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_list) { [%r|\A/root/\.bash.*|] }
-      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
+      let(:ignore_paths) { [%r|\A/root/\.bash.*|] }
 
-      it "filters ignore_list" do
-        expect(diffs.first.size).to eq 1
-        expect(diffs.first.first.action).to eq "-"
-        expect(diffs.first.first.element).to eq source_entry4
+      it "returns ignored list using match" do
+        expect(ignored).to eq ["/root/.bash_history", "/root/.bash_logout"]
       end
     end
 
     context "when ignore list has unknown type" do
       let(:source_find) { [source_find1, source_find3, source_find4] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_list) { [1, 2, 3] }
+      let(:ignore_paths) { [1, 2, 3] }
 
       it "raise_error TypeError" do
-        expect{ checker.diff_entries(source_find, target_find, ignore_list) }.to raise_error(TypeError)
+        expect{ checker.ignore_paths(diffs, ignore_paths) }.to raise_error(TypeError)
       end
     end
+
+  end
+  
+  describe "#uniq_diff_file_paths" do
+      let(:source_find) { [source_find1, source_find2, source_find3] }
+      let(:target_find) { [target_find1_changed, target_find2_changed, target_find3_changed] }
+      let(:diffs) { checker.diff_entries(source_find, target_find) }
+      let(:file_paths) { checker.uniq_diff_file_paths(diffs) }
+
+      it "returns differed file paths" do
+        expect(file_paths).to eq ["/root/.bash_history", "/root/.bash_logout"]
+      end
+
+      it "returns uniq Array" do
+        expect(file_paths.uniq).to eq file_paths
+      end
+
+      it "does not included dir" do
+        expect(file_paths).not_to include "/root" 
+      end
 
   end
 

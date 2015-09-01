@@ -23,6 +23,14 @@ module Ajimi
         "#{@path}, #{@mode}, #{@user}, #{@group}, #{@bytes}"
       end
 
+      def dir?
+        @mode[0] == "d"
+      end
+
+      def file?
+        @mode[0] == "-"
+      end
+      
       class << self
         def parse(line)
           path, mode, user, group, bytes = line.chomp.split(', ')

@@ -70,6 +70,35 @@ describe "Ajimi::Server::Entry" do
     end
     
   end
+  
+  describe "#dir?" do
+    let(:dir_entry) { make_entry("/root, dr-xr-x---, root, root, 4096") }
+    let(:file_entry) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
+
+    it "returns true" do
+      expect(dir_entry.dir?).to eq true
+    end
+
+    it "returns false" do
+      expect(file_entry.dir?).to eq false
+    end
+
+  end
+
+  describe "#file?" do
+    let(:dir_entry) { make_entry("/root, dr-xr-x---, root, root, 4096") }
+    let(:file_entry) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
+
+    it "returns true" do
+      expect(file_entry.file?).to eq true
+    end
+
+    it "returns false" do
+      expect(dir_entry.file?).to eq false
+    end
+
+  end
+
   describe ".parse" do
     let(:line) { "/home/ec2-user, drwx------, ec2-user, ec2-group, 4096" }
     let(:entry) { Ajimi::Server::Entry.new(

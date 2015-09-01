@@ -13,11 +13,14 @@ target_key "~/.ssh/MasayukiMORITA.pem"
 # check setting
 check_root_path "/root"
 
-ignore_list [
+ignore_paths [
   "/root/.bash_history",
   %r|\A/root/\.gem/?.*|,
   "/root/.lesshst",
   "/root/.viminfo",
-  "/root/du.log",
-  ["/root/.ssh/authorized_keys", /Please login as the user/]
+  "/root/du.log"
 ]
+
+ignore_contents ({
+  "/root/.ssh/authorized_keys" => /Please login as the user/
+})
