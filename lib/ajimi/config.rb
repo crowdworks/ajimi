@@ -6,7 +6,7 @@ module Ajimi
     def initialize
       @config = {}
     end
-    
+
     def self.load(path)
       Ajimi::Config.new.tap do |obj|
         obj.load_file(path)
@@ -17,40 +17,20 @@ module Ajimi
       instance_eval(File.read(path), path) if path
     end
 
-    def source_host(host)
-      @config[:source_host] = host
-    end
+    CONFIG_KEYWORDS = [
+      :source_host,
+      :source_user,
+      :source_key,
+      :target_host,
+      :target_user,
+      :target_key,
+      :check_root_path,
+      :ignore_paths,
+      :ignore_contents
+    ]
 
-    def source_user(user)
-      @config[:source_user] = user
-    end
-
-    def source_key(key)
-      @config[:source_key] = key
-    end
-
-    def target_host(host)
-      @config[:target_host] = host
-    end
-
-    def target_user(user)
-      @config[:target_user] = user
-    end
-
-    def target_key(key)
-      @config[:target_key] = key
-    end
-
-    def check_root_path(path)
-      @config[:check_root_path] = path
-    end
-
-    def ignore_paths(array)
-      @config[:ignore_paths] = array
-    end
-
-    def ignore_contents(hash)
-      @config[:ignore_contents] = hash
+    CONFIG_KEYWORDS.each do |keyword|
+      define_method(keyword) { |param| @config[keyword] = param }
     end
 
   end
