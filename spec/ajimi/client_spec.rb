@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Ajimi::Client" do
   let(:client) { Ajimi::Client.new }
-  let(:checker) { Ajimi::Checker.new(Ajimi::Server.new, Ajimi::Server.new, "/") }
+  let(:checker) { Ajimi::Checker.new(Ajimi::Config.new) }
   let(:reporter) { Ajimi::Reporter.new(checker) }
 
   before { client.checker = checker }

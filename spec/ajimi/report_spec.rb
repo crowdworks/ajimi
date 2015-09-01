@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Ajimi::Reporter" do
   describe "#report" do
-    let(:checker) { Ajimi::Checker.new(Ajimi::Server.new, Ajimi::Server.new, "/") }
+    let(:checker) { Ajimi::Checker.new(Ajimi::Config.new) }
     let(:reporter) { Ajimi::Reporter.new(checker) }
     context "when target is the same as source" do
       before { checker.result = true }

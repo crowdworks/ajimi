@@ -4,11 +4,20 @@ module Ajimi
   class Checker
     attr_accessor :diffs, :result, :source, :target, :ignore_list
 
-    def initialize(source, target, check_root_path, ignore_list = [])
-      @source = source
-      @target = target
-      @check_root_path = check_root_path
-      @ignore_list = ignore_list
+    def initialize(config)
+      @config = config.config
+      @source = Ajimi::Server.new(
+        host: @config[:source_host],
+        user: @config[:source_user],
+        key: @config[:source_key]
+      )
+      @target = Ajimi::Server.new(
+        host: @config[:target_host],
+        user: @config[:target_user],
+        key: @config[:target_key]
+      )
+      @check_root_path = @config[:check_root_path]
+      @ignore_list = @config[:ignore_list]
     end
     
     def check

@@ -3,7 +3,21 @@ require 'spec_helper'
 describe Ajimi::Checker do
   let(:source) { Ajimi::Server.new }
   let(:target) { Ajimi::Server.new }
-  let(:checker) { Ajimi::Checker.new(source, target, "/") }
+  let(:config) { Ajimi::Config.new }
+  let(:checker) { Ajimi::Checker.new(config) }
+  let(:source) { checker.source }
+  let(:target) { checker.target }
+
+  before do
+    config.source_host "source_host_value"
+    config.source_user "source_user_value"
+    config.source_key "source_key_value"
+    config.target_host "target_host_value"
+    config.target_user "target_user_value"
+    config.target_key "target_key_value"
+    config.check_root_path "check_root_path_value"
+    config.ignore_list ["/path_to_ignore1", "/path_to_ignore2"]
+  end
 
   describe "#check" do
     let(:find1) { "path1, mode1, user1, group1, bytes1" }

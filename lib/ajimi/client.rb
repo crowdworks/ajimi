@@ -4,22 +4,10 @@ module Ajimi
 
     def initialize(config = {})
       @config = config
-      @source = Ajimi::Server.new(
-        host: @config[:source_host],
-        user: @config[:source_user],
-        key: @config[:source_key]
-      )
-      @target = Ajimi::Server.new(
-        host: @config[:target_host],
-        user: @config[:target_user],
-        key: @config[:target_key]
-      )
-      @check_root_path = @config[:check_root_path]
-      @ignore_list = @config[:ignore_list]
     end
     
     def check
-      @checker ||= Checker.new(@source, @target, @check_root_path, @ignore_list)
+      @checker ||= Checker.new(@config)
       @checker.check
     end
 
