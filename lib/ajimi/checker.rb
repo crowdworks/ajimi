@@ -26,11 +26,11 @@ module Ajimi
       source_find = @source.find(@check_root_path)
       target_find = @target.find(@check_root_path)
 
-      diffs = diff_entries(source_find, target_find)
+      @diffs = diff_entries(source_find, target_find)
       ignored_by_path = ignore_paths(diffs, @ignore_paths)
-      @diffs = remove_ignored_entry_from_diffs(diffs, ignored_by_path)
+      @diffs = remove_ignored_entry_from_diffs(@diffs, ignored_by_path)
       ignored_by_contents = ignore_contents(@diffs, @ignore_contents)
-      @diffs = remove_ignored_entry_from_diffs(diffs, ignored_by_contents)
+      @diffs = remove_ignored_entry_from_diffs(@diffs, ignored_by_contents)
       @result = @diffs.empty?
     end
 
