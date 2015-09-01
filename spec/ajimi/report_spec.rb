@@ -25,8 +25,15 @@ describe "Ajimi::Reporter" do
       }
       it "puts some diffs" do
         allow(checker).to receive(:diffs).and_return(diffs)
-        allow(checker).to receive(:find_contents_ignore_pattern).and_return(//)
-        allow(checker).to receive(:diff_contents).and_return([])
+        allow(checker).to receive(:find_contents_ignore_pattern)
+        allow(checker).to receive(:diff_contents).with("path2", nil).and_return([
+          [ make_change("-", 1, "hoge") ]
+        ])
+        allow(checker).to receive(:diff_contents).with("path3", nil).and_return([
+          [ make_change("-", 1, "HOGE"),
+            make_change("+", 1, "FUGA") ]
+        ])
+
         report_output =
           "###### diff entries report ######\n" +
           "--- \n" +
@@ -40,9 +47,12 @@ describe "Ajimi::Reporter" do
           "--- : path2\n" +
           "+++ : path2\n" +
           "\n" +
+          "- 1 hoge\n" +
           "--- : path3\n" +
           "+++ : path3\n" +
           "\n" +
+          "- 1 HOGE\n" +
+          "+ 1 FUGA\n" +
           "\n" +
           "###### diff summary report ######\n" +
           "diff: 2 files\n" +
