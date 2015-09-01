@@ -12,18 +12,15 @@ describe "Ajimi::Reporter" do
     end
 
     context "when target differs from source" do
-      let(:entry1) { make_entry("path1, mode1, user1, group1, bytes1") }
-      let(:entry2) { make_entry("path2, mode2, user2, group2, bytes2") }
-      let(:entry3) { make_entry("path3, mode3, user3, group3, bytes3") }
-      let(:entry3_changed) { make_entry("path3, mode3, user3, group3, bytes3_changed") }
-      let(:source_entries) { [entry1, entry2, entry3] }
-      let(:target_entries) { [entry1, entry3_changed] }
-      let!(:diffs) { checker.diff_entries(source_entries, target_entries) }
-      before { 
-        checker.result = false
-        checker.diffs = checker.diff_entries(source_entries, target_entries)
-      }
-      it "puts some diffs" do
+      let(:entry1) { "path1, mode1, user1, group1, bytes1" }
+      let(:entry2) { "path2, mode2, user2, group2, bytes2" }
+      let(:entry3) { "path3, mode3, user3, group3, bytes3" }
+      let(:entry3_changed) { "path3, mode3, user3, group3, bytes3_changed" }
+      let(:source_find) { [entry1, entry2, entry3] }
+      let(:target_find) { [entry1, entry3_changed] }
+      let(:diffs) { checker.diff_entries(source_find, target_find) }
+      it "print diff report" do
+        allow(checker).to receive(:result).and_return(false)
         allow(checker).to receive(:diffs).and_return(diffs)
         allow(checker).to receive(:find_contents_ignore_pattern)
         allow(checker).to receive(:diff_contents).with("path2", nil).and_return([

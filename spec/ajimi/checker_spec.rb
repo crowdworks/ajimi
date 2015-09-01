@@ -6,22 +6,22 @@ describe Ajimi::Checker do
   let(:checker) { Ajimi::Checker.new(source, target, "/") }
 
   describe "#check" do
-    let(:entry1) { make_entry("path1, mode1, user1, group1, bytes1") }
-    let(:entry2) { make_entry("path2, mode2, user2, group2, bytes2") }
-    let(:entry2_changed) { make_entry("path2, mode2, user2, group2, bytes2_changed") }
+    let(:find1) { "path1, mode1, user1, group1, bytes1" }
+    let(:find2) { "path2, mode2, user2, group2, bytes2" }
+    let(:find2_changed) {"path2, mode2, user2, group2, bytes2_changed" }
 
     context "when 2 servers have same entries" do
       it "returns true" do
-        allow(source).to receive(:entries).and_return([entry1, entry2])
-        allow(target).to receive(:entries).and_return([entry1, entry2])
+        allow(source).to receive(:find).and_return([find1, find2])
+        allow(target).to receive(:find).and_return([find1, find2])
         expect(checker.check).to be true
       end
     end
 
     context "when 2 servers have different entries" do
       it "returns false" do
-        allow(source).to receive(:entries).and_return([entry1, entry2])
-        allow(target).to receive(:entries).and_return([entry1, entry2_changed])
+        allow(source).to receive(:find).and_return([find1, find2])
+        allow(target).to receive(:find).and_return([find1, find2_changed])
         expect(checker.check).to be false
       end
 
@@ -53,23 +53,33 @@ describe Ajimi::Checker do
 
   end
 
-  let(:source_entry1) { make_entry("/root, dr-xr-x---, root, root, 4096") }
-  let(:source_entry2) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
-  let(:source_entry3) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 18") }
-  let(:source_entry4) { make_entry("/root/.ssh/authorized_keys, -rw-------, root, root, 1099") }
+  let(:source_find1) { "/root, dr-xr-x---, root, root, 4096" }
+  let(:source_find2) { "/root/.bash_history, -rw-------, root, root, 4847" }
+  let(:source_find3) { "/root/.bash_logout, -rw-r--r--, root, root, 18" }
+  let(:source_find4) { "/root/.ssh/authorized_keys, -rw-------, root, root, 1099" }
 
-  let(:target_entry1) { make_entry("/root, dr-xr-x---, root, root, 4096") }
-  let(:target_entry2) { make_entry("/root/.bash_history, -rw-------, root, root, 4847") }
-  let(:target_entry3) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 18") }
-  let(:target_entry3_changed) { make_entry("/root/.bash_logout, -rw-r--r--, root, root, 118") }
+  let(:target_find1) { "/root, dr-xr-x---, root, root, 4096" }
+  let(:target_find2) { "/root/.bash_history, -rw-------, root, root, 4847" }
+  let(:target_find3) { "/root/.bash_logout, -rw-r--r--, root, root, 18" }
+  let(:target_find3_changed) { "/root/.bash_logout, -rw-r--r--, root, root, 118" }
+
+  let(:source_entry1) { make_entry(source_find1) }
+  let(:source_entry2) { make_entry(source_find2) }
+  let(:source_entry3) { make_entry(source_find3) }
+  let(:source_entry4) { make_entry(source_find4) }
+
+  let(:target_entry1) { make_entry(target_find1) }
+  let(:target_entry2) { make_entry(target_find2) }
+  let(:target_entry3) { make_entry(target_find3) }
+  let(:target_entry3_changed) { make_entry(target_find3_changed) }
 
   describe "#raw_diff_entries" do
 
-    let(:diffs) { checker.diff_entries(source_entries, target_entries) }
+    let(:diffs) { checker.diff_entries(source_find, target_find) }
 
     context "when source and target have same entry" do
-      let(:source_entries) { [source_entry1, source_entry2, source_entry3] }
-      let(:target_entries) { [target_entry1, target_entry2, target_entry3] }
+      let(:source_find) { [source_find1, source_find2, source_find3] }
+      let(:target_find) { [target_find1, target_find2, target_find3] }
 
       it "has empty list" do
         expect(diffs.empty?).to be true
@@ -77,8 +87,8 @@ describe Ajimi::Checker do
     end
     
     context "when target has entry2" do
-      let(:source_entries) { [source_entry1] }
-      let(:target_entries) { [target_entry1, target_entry2] }
+      let(:source_find) { [source_find1] }
+      let(:target_find) { [target_find1, target_find2] }
 
       it "has + entry" do
         expect(diffs.first.first.action).to eq "+"
@@ -87,8 +97,8 @@ describe Ajimi::Checker do
     end
 
     context "when target does not have entry2" do
-      let(:source_entries) { [source_entry1, source_entry2, source_entry3] }
-      let(:target_entries) { [target_entry1, target_entry3] }
+      let(:source_find) { [source_find1, source_find2, source_find3] }
+      let(:target_find) { [target_find1, target_find3] }
 
       it "has - entry" do
         expect(diffs.first.first.action).to eq "-"
@@ -97,8 +107,8 @@ describe Ajimi::Checker do
     end
 
     context "when entry3 has changed" do
-      let(:source_entries) { [source_entry1, source_entry3] }
-      let(:target_entries) { [target_entry1, target_entry3_changed] }
+      let(:source_find) { [source_find1, source_find3] }
+      let(:target_find) { [target_find1, target_find3_changed] }
 
       it "has - entry" do
         expect(diffs.first.first.action).to eq "-"
@@ -115,10 +125,10 @@ describe Ajimi::Checker do
 
   describe "#diff_entries" do
     context "when ignore list is empty" do
-      let(:source_entries) { [source_entry1] }
-      let(:target_entries) { [target_entry1, target_entry2] }
+      let(:source_find) { [source_find1] }
+      let(:target_find) { [target_find1, target_find2] }
       let(:ignore_list) { [] }
-      let(:diffs) { checker.diff_entries(source_entries, target_entries, ignore_list) }
+      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
 
       it "has + entry" do
         expect(diffs.first.first.action).to eq "+"
@@ -127,10 +137,10 @@ describe Ajimi::Checker do
     end
 
     context "when ignore list has strings" do
-      let(:source_entries) { [source_entry1, source_entry3] }
-      let(:target_entries) { [target_entry1, target_entry2, target_entry3_changed] }
+      let(:source_find) { [source_find1, source_find3] }
+      let(:target_find) { [target_find1, target_find2, target_find3_changed] }
       let(:ignore_list) { ["/hoge", "/root/.bash_logout"] }
-      let(:diffs) { checker.diff_entries(source_entries, target_entries, ignore_list) }
+      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
 
       it "filters ignore_list" do
         expect(diffs.first.size).to eq 1
@@ -140,10 +150,10 @@ describe Ajimi::Checker do
     end
 
     context "when ignore list has regexp" do
-      let(:source_entries) { [source_entry1, source_entry3, source_entry4] }
-      let(:target_entries) { [target_entry1, target_entry2, target_entry3_changed] }
+      let(:source_find) { [source_find1, source_find3, source_find4] }
+      let(:target_find) { [target_find1, target_find2, target_find3_changed] }
       let(:ignore_list) { [%r|\A/root/\.bash.*|] }
-      let(:diffs) { checker.diff_entries(source_entries, target_entries, ignore_list) }
+      let(:diffs) { checker.diff_entries(source_find, target_find, ignore_list) }
 
       it "filters ignore_list" do
         expect(diffs.first.size).to eq 1
@@ -153,12 +163,12 @@ describe Ajimi::Checker do
     end
 
     context "when ignore list has unknown type" do
-      let(:source_entries) { [source_entry1, source_entry3, source_entry4] }
-      let(:target_entries) { [target_entry1, target_entry2, target_entry3_changed] }
+      let(:source_find) { [source_find1, source_find3, source_find4] }
+      let(:target_find) { [target_find1, target_find2, target_find3_changed] }
       let(:ignore_list) { [1, 2, 3] }
 
       it "raise_error TypeError" do
-        expect{ checker.diff_entries(source_entries, target_entries, ignore_list) }.to raise_error(TypeError)
+        expect{ checker.diff_entries(source_find, target_find, ignore_list) }.to raise_error(TypeError)
       end
     end
 

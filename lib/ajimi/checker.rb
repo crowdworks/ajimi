@@ -12,15 +12,15 @@ module Ajimi
     end
     
     def check
-      source_entries = @source.entries(@check_root_path)
-      target_entries = @target.entries(@check_root_path)
+      source_find = @source.find(@check_root_path)
+      target_find = @target.find(@check_root_path)
 
-      @diffs = diff_entries(source_entries, target_entries, @ignore_list)
+      @diffs = diff_entries(source_find, target_find, @ignore_list)
       @result = @diffs.empty?
     end
 
-    def raw_diff_entries(source_entries, target_entries)
-      diffs = ::Diff::LCS.diff(source_entries.map(&:to_s), target_entries.map(&:to_s))
+    def raw_diff_entries(source_find, target_find)
+      diffs = ::Diff::LCS.diff(source_find, target_find)
       diffs.map do |diff|
         diff.map do |change|
           ::Diff::LCS::Change.new(
@@ -32,8 +32,8 @@ module Ajimi
       end
     end
 
-    def diff_entries(source_entries, target_entries, ignore_list = [])
-      diffs = raw_diff_entries(source_entries, target_entries)
+    def diff_entries(source_find, target_find, ignore_list = [])
+      diffs = raw_diff_entries(source_find, target_find)
       diffs.map do |diff|
         diff.reject do |change|
           ignore_list.any? do |ignore|
