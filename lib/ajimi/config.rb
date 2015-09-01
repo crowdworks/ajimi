@@ -26,7 +26,9 @@ module Ajimi
       :target_key,
       :check_root_path,
       :ignore_paths,
-      :ignore_contents
+      :ignore_contents,
+      :pending_paths,
+      :pending_contents
     ]
 
     CONFIG_KEYWORDS.each do |keyword|

@@ -12,7 +12,9 @@ describe Ajimi::Checker do
     target_key: "target_key_value",
     check_root_path: "check_root_path_value",
     ignore_paths: ["/path_to_ignore1", "/path_to_ignore2"],
-    ignore_contents: ({"/path_to_content" => /ignore_pattern/})
+    ignore_contents: ({"/path_to_content" => /ignore_pattern/}),
+    pending_paths: ["/path_to_pending1", "/path_to_pending2"],
+    pending_contents: ({"/path_to_content" => /pending_pattern/})
   } }
   let(:checker) { Ajimi::Checker.new(config) }
   let(:source) { checker.source }
@@ -145,46 +147,46 @@ describe Ajimi::Checker do
 
   end
 
-  describe "#ignore_paths" do
+  describe "#filter_paths" do
     let(:diffs) { checker.diff_entries(source_find, target_find) }
-    let(:ignored) { checker.ignore_paths(diffs, ignore_paths) }
-    context "when ignore_paths is empty" do
+    let(:filterd) { checker.filter_paths(diffs, filter_paths) }
+    context "when filter_paths is empty" do
       let(:source_find) { [source_find1] }
       let(:target_find) { [target_find1, target_find2] }
-      let(:ignore_paths) { [] }
+      let(:filter_paths) { [] }
 
       it "return empty list" do
-        expect(ignored.empty?).to eq true
+        expect(filterd.empty?).to eq true
       end
     end
 
-    context "when ignore list has strings" do
+    context "when filter list has strings" do
       let(:source_find) { [source_find1, source_find3] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_paths) { ["/hoge", "/root/.bash_logout"] }
+      let(:filter_paths) { ["/hoge", "/root/.bash_logout"] }
 
-      it "returns ignored list using ==" do
-        expect(ignored).to eq ["/root/.bash_logout"]
+      it "returns filterd list using ==" do
+        expect(filterd).to eq ["/root/.bash_logout"]
       end
     end
 
-    context "when ignore list has regexp" do
+    context "when filter list has regexp" do
       let(:source_find) { [source_find1, source_find3, source_find4] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_paths) { [%r|\A/root/\.bash.*|] }
+      let(:filter_paths) { [%r|\A/root/\.bash.*|] }
 
-      it "returns ignored list using match" do
-        expect(ignored).to eq ["/root/.bash_history", "/root/.bash_logout"]
+      it "returns filterd list using match" do
+        expect(filterd).to eq ["/root/.bash_history", "/root/.bash_logout"]
       end
     end
 
-    context "when ignore list has unknown type" do
+    context "when filter list has unknown type" do
       let(:source_find) { [source_find1, source_find3, source_find4] }
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:ignore_paths) { [1, 2, 3] }
+      let(:filter_paths) { [1, 2, 3] }
 
       it "raise_error TypeError" do
-        expect{ checker.ignore_paths(diffs, ignore_paths) }.to raise_error(TypeError)
+        expect{ checker.filter_paths(diffs, filter_paths) }.to raise_error(TypeError)
       end
     end
 

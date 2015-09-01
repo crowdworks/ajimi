@@ -16,11 +16,17 @@ check_root_path "/root"
 ignore_paths [
   "/root/.bash_history",
   %r|\A/root/\.gem/?.*|,
-  "/root/.lesshst",
-  "/root/.viminfo",
-  "/root/du.log"
+  "/root/.lesshst"
 ]
 
 ignore_contents ({
   "/root/.ssh/authorized_keys" => /Please login as the user/
+})
+
+pending_paths [
+  "/root/du.log"
+]
+
+pending_contents ({
+  "/root/.viminfo" => /.*/
 })

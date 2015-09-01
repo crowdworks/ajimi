@@ -41,12 +41,20 @@ describe "Ajimi::Reporter" do
         "- 1 HOGE\n" +
         "+ 1 FUGA\n"
       }
+      let(:source_file_count) { source_find.count }
+      let(:target_file_count) { target_find.count }
+      let(:ignored_by_path_file_count) { 0 }
+      let(:pending_by_path_file_count) { 0 }
+      let(:ignored_by_content_file_count) { 0 }
+      let(:pending_by_content_file_count) { 0 }
       let(:uniq_diff_file_count) { 2 }
 
       it "print diff report" do
         allow(checker).to receive(:result).and_return(false)
         allow(checker).to receive(:diffs).and_return(diffs)
-        allow(checker).to receive(:uniq_diff_file_count).and_return(uniq_diff_file_count)
+        allow(checker).to receive(:source_file_count).and_return(source_file_count)
+        allow(checker).to receive(:target_file_count).and_return(target_file_count)
+        allow(checker).to receive(:diff_file_count).and_return(uniq_diff_file_count)
         checker.diffs = diffs
         checker.diff_contents_cache = diff_contents_cache
         report_output =
@@ -62,6 +70,12 @@ describe "Ajimi::Reporter" do
           diff_contents_cache +
           "\n" +
           "###### diff summary report ######\n" +
+          "source: #{source_file_count} files\n" +
+          "target: #{target_file_count} files\n" +
+          "ignored_by_path: #{ignored_by_path_file_count} files\n" +
+          "pending_by_path: #{pending_by_path_file_count} files\n" +
+          "ignored_by_content: #{ignored_by_content_file_count} files\n" +
+          "pending_by_content: #{pending_by_content_file_count} files\n" +
           "diff: #{uniq_diff_file_count} files\n" +
           "\n"
 

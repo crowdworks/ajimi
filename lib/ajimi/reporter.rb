@@ -27,7 +27,13 @@ module Ajimi
         puts ""
 
         puts "###### diff summary report ######"
-        puts "diff: #{@checker.uniq_diff_file_count} files"
+        puts "source: #{@checker.source_file_count} files"
+        puts "target: #{@checker.target_file_count} files"
+        puts "ignored_by_path: #{@checker.ignored_by_path_file_count} files"
+        puts "pending_by_path: #{@checker.pending_by_path_file_count} files"
+        puts "ignored_by_content: #{@checker.ignored_by_content_file_count} files"
+        puts "pending_by_content: #{@checker.pending_by_content_file_count} files"
+        puts "diff: #{@checker.diff_file_count} files"
         puts ""
 
         false

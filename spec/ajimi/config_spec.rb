@@ -18,6 +18,13 @@ ignore_paths [
 ignore_contents ({
   "/path_to_content" => /ignore_pattern/
 })
+pending_paths [
+  "/path_to_pending1",
+  "/path_to_pending2"
+]
+pending_contents ({
+  "/path_to_content" => /pending_pattern/
+})
     AJIMIFILE
     }
 
@@ -30,7 +37,9 @@ ignore_contents ({
       target_key: "target_key_value",
       check_root_path: "check_root_path_value",
       ignore_paths: ["/path_to_ignore1", "/path_to_ignore2"],
-      ignore_contents: { "/path_to_content" => /ignore_pattern/ }
+      ignore_contents: { "/path_to_content" => /ignore_pattern/ },
+      pending_paths: ["/path_to_pending1", "/path_to_pending2"],
+      pending_contents: { "/path_to_content" => /pending_pattern/ }
     } }
 
     before do
