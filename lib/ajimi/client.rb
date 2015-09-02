@@ -20,11 +20,11 @@ module Ajimi
     option :limit_check_contents, :type => :numeric, :default => 0
     def check
       @config.merge!( {
-        check_root_path: options[:check_root_path],
         find_max_depth: options[:find_max_depth],
         enable_check_contents: options[:enable_check_contents],
         limit_check_contents: options[:limit_check_contents]
       } )
+      @config[:check_root_path] = options[:check_root_path] if options[:check_root_path]
       _check
     end
 
