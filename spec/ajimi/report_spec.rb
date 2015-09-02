@@ -57,6 +57,7 @@ describe "Ajimi::Reporter" do
         allow(checker).to receive(:diff_file_count).and_return(uniq_diff_file_count)
         checker.diffs = diffs
         checker.diff_contents_cache = diff_contents_cache
+        checker.enable_check_contents = true
         report_output =
           "###### diff entries report ######\n" +
           "--- source_host_value\n" +

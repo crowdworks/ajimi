@@ -23,7 +23,11 @@ module Ajimi
         puts ""
 
         puts "###### diff contents report ######"
-        puts @checker.diff_contents_cache
+        if @checker.enable_check_contents
+          puts @checker.diff_contents_cache
+        else
+          puts "check_contents was skipped (enable_check_contents = false)"
+        end
         puts ""
 
         puts "###### diff summary report ######"

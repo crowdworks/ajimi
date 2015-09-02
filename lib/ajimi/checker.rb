@@ -2,7 +2,7 @@ require 'diff/lcs'
 
 module Ajimi
   class Checker
-    attr_accessor :diffs, :result, :source, :target, :diff_contents_cache
+    attr_accessor :diffs, :result, :source, :target, :diff_contents_cache, :enable_check_contents
 
     def initialize(config)
       @config = config
@@ -24,13 +24,17 @@ module Ajimi
 
     end
     
-    def check
+    def check(enable_check_contents = false)
+      @enable_check_contents = enable_check_contents
       @source_find = @source.find(@check_root_path)
       @target_find = @target.find(@check_root_path)
 
       @diffs = diff_entries(@source_find, @target_find)
       @diffs = ignore_and_pending_paths(@diffs, @ignore_paths, @pending_paths)
-      @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents)
+
+      if @enable_check_contents
+        @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents)
+      end
 
       @result = @diffs.empty?
     end

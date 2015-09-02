@@ -12,15 +12,14 @@ module Ajimi
     end
 
     desc "check", "check diff"
+    option :enable_check_contents, :type => :boolean, :default => false
     def check
       @checker ||= Checker.new(@config)
-      @checker.check
-    end
+      result = @checker.check(options[:enable_check_contents])
 
-    desc "report", "print report"
-    def report(out)
-      @reporter ||= Reporter.new(@checker, out)
+      @reporter ||= Reporter.new(@checker)
       @reporter.report
+      result
     end
 
     desc "exec source|target command", "execute arbitrary command at source or target"
@@ -38,12 +37,6 @@ module Ajimi
       puts "\n"
     end
 
-    desc "all", "check and report"
-    def all(out = STDOUT)
-      result = check
-      report(out)
-      result
-    end
   end
 
 end
