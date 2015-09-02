@@ -13,11 +13,13 @@ module Ajimi
 
     desc "check", "diff source and target servers"
     option :check_root_path, :type => :string, :default => "/"
+    option :find_max_depth, :type => :numeric
     option :enable_check_contents, :type => :boolean, :default => false
     option :limit_check_contents, :type => :numeric, :default => 0
     def check
       @config.merge!( {
         check_root_path: options[:check_root_path],
+        find_max_depth: options[:find_max_depth],
         enable_check_contents: options[:enable_check_contents],
         limit_check_contents: options[:limit_check_contents]
       } )
@@ -25,9 +27,11 @@ module Ajimi
     end
 
     desc "dir path", "diff directroy"
+    option :find_max_depth, :type => :numeric, :default => 0
     def dir(path)
       @config.merge!( {
         check_root_path: path,
+        find_max_depth: options[:find_max_depth],
         enable_check_contents: false
       } )
       _check

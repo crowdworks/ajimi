@@ -23,11 +23,12 @@ module Ajimi
       @pending_contents = @config[:pending_contents] || {}
       @enable_check_contents = @config[:enable_check_contents] || false
       @limit_check_contents = @config[:limit_check_contents] || 0
+      @find_max_depth = @config[:find_max_depth]
     end
     
     def check
-      @source_find = @source.find(@check_root_path)
-      @target_find = @target.find(@check_root_path)
+      @source_find = @source.find(@check_root_path, @find_max_depth)
+      @target_find = @target.find(@check_root_path, @find_max_depth)
 
       @diffs = diff_entries(@source_find, @target_find)
       @diffs = ignore_and_pending_paths(@diffs, @ignore_paths, @pending_paths)
