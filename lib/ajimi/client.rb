@@ -28,10 +28,12 @@ module Ajimi
 
     desc "dir path", "diff directroy"
     option :find_max_depth, :type => :numeric, :default => 0
+    option :ignore_paths, :type => :array
     def dir(path)
       @config.merge!( {
         check_root_path: path,
         find_max_depth: options[:find_max_depth],
+        ignore_paths: options[:ignore_paths],
         enable_check_contents: false
       } )
       _check
