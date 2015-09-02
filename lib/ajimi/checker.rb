@@ -103,8 +103,6 @@ module Ajimi
     end
 
     def ignore_and_pending_contents(diffs, ignore_contents, pending_contents, limit_check_contents)
-      return diffs if ignore_contents.empty? && pending_contents.empty?
-
       @ignored_by_content = []
       @pending_by_content = []
       @diff_contents_cache = ""
@@ -148,7 +146,8 @@ module Ajimi
 
     def split_diff_file_paths(diffs)
       return [],[] if diffs.flatten.empty?
-      minus = plus = []
+      minus = []
+      plus = []
       diffs.each do |diff|
         diff.each do |change|
           minus << change.element.path if change.action == "-" && change.element.file?
