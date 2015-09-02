@@ -5,10 +5,12 @@ module Ajimi
     attr_accessor :checker, :reporter
 
     class_option :ajimifile, :default => './Ajimifile', :desc => "Ajimifile path"
+    class_option :verbose, :type => :boolean, :default => true
 
     def initialize(*args)
       super
       @config = Ajimi::Config.load(options[:ajimifile])
+      @config[:verbose] = options[:verbose] unless options[:verbose].nil?
     end
 
     desc "check", "diff source and target servers"
@@ -26,7 +28,7 @@ module Ajimi
       _check
     end
 
-    desc "dir path", "diff directroy"
+    desc "dir path", "diff specified directroy"
     option :find_max_depth, :type => :numeric, :default => 1
     option :ignore_pattern, :type => :string
     def dir(path)
@@ -40,7 +42,7 @@ module Ajimi
       _check
     end
 
-    desc "file path", "diff file"
+    desc "file path", "diff specified file"
     option :ignore_pattern, :type => :string
     def file(path)
       @config.merge!( {

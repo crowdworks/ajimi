@@ -24,20 +24,37 @@ module Ajimi
       @enable_check_contents = @config[:enable_check_contents] || false
       @limit_check_contents = @config[:limit_check_contents] || 0
       @find_max_depth = @config[:find_max_depth]
+      @verbose = @config[:verbose] || false
     end
     
     def check
+      puts_verbose "Start ajimi check with options: #{@config}\n"
+
+      puts_verbose "Finding...: #{@config[:source_host]}\n"
       @source_find = @source.find(@check_root_path, @find_max_depth)
+
+      puts_verbose "Finding...: #{@config[:target_host]}\n"
       @target_find = @target.find(@check_root_path, @find_max_depth)
 
+      puts_verbose "Checking diff entries...\n"
       @diffs = diff_entries(@source_find, @target_find)
+
+      puts_verbose "Checking ignore_paths and pending_paths...\n"
       @diffs = ignore_and_pending_paths(@diffs, @ignore_paths, @pending_paths)
 
       if @enable_check_contents
+        puts_verbose "Checking ignore_contents and pending_contents...\n"
         @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents, @limit_check_contents)
       end
 
+      puts_verbose "Diffs empty?: #{@diffs.empty?}\n"
+      puts_verbose "\n"
+
       @result = @diffs.empty?
+    end
+
+    def puts_verbose(message)
+      puts message if @config[:verbose]
     end
 
     def diff_entries(source_find, target_find)

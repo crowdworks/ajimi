@@ -28,6 +28,7 @@ module Ajimi
             stderr << data if stream == :stderr
           end
         end
+        $stderr.puts stderr unless stderr == ""
         stdout
       end
 
