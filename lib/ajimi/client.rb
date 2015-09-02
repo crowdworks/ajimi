@@ -12,7 +12,7 @@ module Ajimi
     end
 
     desc "check", "diff source and target servers"
-    option :check_root_path, :type => :string, :default => "/"
+    option :check_root_path, :type => :string
     option :find_max_depth, :type => :numeric
     option :enable_check_contents, :type => :boolean, :default => false
     option :limit_check_contents, :type => :numeric, :default => 0
