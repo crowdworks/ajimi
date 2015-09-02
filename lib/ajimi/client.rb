@@ -56,7 +56,7 @@ module Ajimi
     
     desc "exec source|target command", "execute arbitrary command at source or target"
     def exec(server, command)
-      raise ArgumentError, "server option must be source or target" if %w(source target).include? options[:server] 
+      raise ArgumentError, "server option must be source or target" unless %w(source target).include? server 
 
       @server = Ajimi::Server.new(
         host: @config["#{server}_host".to_sym],
