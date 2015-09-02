@@ -22,6 +22,7 @@ module Ajimi
     def find(dir, find_max_depth = nil)
       cmd = "sudo find #{dir} -ls"
       cmd += " -maxdepth #{find_max_depth}" if find_max_depth
+      cmd += " -path /dev -prune -o -path /proc -prune"
       cmd += " | awk  '{printf \"%s, %s, %s, %s, %s\\n\", \$11, \$3, \$5, \$6, \$7}'"
       stdout = command_exec(cmd)
       stdout.split(/\n/).map {|line| line.chomp }.sort
