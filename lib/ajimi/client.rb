@@ -13,9 +13,14 @@ module Ajimi
 
     desc "check", "check diff"
     option :enable_check_contents, :type => :boolean, :default => false
+    option :limit_check_contents, :type => :numeric, :default => 0
     def check
+      @config.merge!( {
+        enable_check_contents: options[:enable_check_contents],
+        limit_check_contents: options[:limit_check_contents]
+      } )
       @checker ||= Checker.new(@config)
-      result = @checker.check(options[:enable_check_contents])
+      result = @checker.check
 
       @reporter ||= Reporter.new(@checker)
       @reporter.report

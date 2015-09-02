@@ -21,11 +21,11 @@ module Ajimi
       @ignore_contents = @config[:ignore_contents] || {}
       @pending_paths = @config[:pending_paths] || []
       @pending_contents = @config[:pending_contents] || {}
-
+      @enable_check_contents = @config[:enable_check_contents] || false
+      @limit_check_contents = @config[:limit_check_contents] || 0
     end
     
-    def check(enable_check_contents = false)
-      @enable_check_contents = enable_check_contents
+    def check
       @source_find = @source.find(@check_root_path)
       @target_find = @target.find(@check_root_path)
 
@@ -33,7 +33,7 @@ module Ajimi
       @diffs = ignore_and_pending_paths(@diffs, @ignore_paths, @pending_paths)
 
       if @enable_check_contents
-        @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents)
+        @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents, @limit_check_contents)
       end
 
       @result = @diffs.empty?
@@ -84,7 +84,7 @@ module Ajimi
       filtered.uniq.sort
     end
 
-    def ignore_and_pending_contents(diffs, ignore_contents, pending_contents)
+    def ignore_and_pending_contents(diffs, ignore_contents, pending_contents, limit_check_contents)
       return diffs if ignore_contents.empty? && pending_contents.empty?
 
       @ignored_by_content = []
@@ -92,7 +92,7 @@ module Ajimi
       @diff_contents_cache = ""
   
       diff_files = product_set_file_paths(diffs)
-      
+      diff_files = diff_files.slice(0, limit_check_contents) if limit_check_contents > 0
       diff_files.each do |file|
         diff_file_result = diff_file(file)
         ignored_diff_file_result = filter_diff_file(diff_file_result, ignore_contents[file])
