@@ -168,8 +168,8 @@ module Ajimi
     end
 
     def diff_file(path)
-      source_file = @source.cat(path)
-      target_file = @target.cat(path)
+      source_file = @source.cat_or_md5sum(path)
+      target_file = @target.cat_or_md5sum(path)
       diffs = ::Diff::LCS.diff(source_file, target_file)
     end
 

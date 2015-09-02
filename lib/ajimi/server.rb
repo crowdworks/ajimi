@@ -36,5 +36,10 @@ module Ajimi
       stdout.split(/\n/).map {|line| line.chomp }
     end
 
+    def cat_or_md5sum(file)
+      stdout = command_exec("if (sudo file -b #{file} | grep text > /dev/null 2>&1) ; then (sudo cat #{file}) else (sudo md5sum #{file}) fi")
+      stdout.split(/\n/).map {|line| line.chomp }
+    end
+
   end
 end
