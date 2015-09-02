@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+src = File.expand_path('../../Ajimifile.sample', __FILE__)
+dst = "./Ajimifile"
+
+puts "copy: #{src} -> #{dst}"
+FileUtils.cp(src, dst)

@@ -1,0 +1,37 @@
+# Ajimi configuration file
+
+# source setting
+source_host "source.example.com"
+source_user "ec2-user"
+source_key "~/.ssh/id_rsa"
+
+# target setting
+target_host "target.example.com"
+target_user "ec2-user"
+target_key "~/.ssh/id_rsa"
+
+# check setting
+check_root_path "/"
+
+ignore_paths [
+  %r|^/dev/?.*|,
+  %r|^/lost\+found/?.*|,
+  %r|^/media/?.*|,
+  %r|^/mnt/?.*|,
+  %r|^/proc/?.*|,
+  %r|^/run/?.*|,
+  %r|^/sys/?.*|,
+  %r|^/tmp/?.*|
+]
+
+ignore_contents ({
+  "/root/.ssh/authorized_keys" => /Please login as the user \\"ec2-user\\" rather than the user \\"root\\"/
+})
+
+pending_paths [
+  "/etc/sudoers"
+]
+
+pending_contents ({
+  "/etc/hosts" => /127\.0\.0\.1/
+})
