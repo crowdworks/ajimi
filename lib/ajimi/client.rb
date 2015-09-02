@@ -23,6 +23,21 @@ module Ajimi
       @reporter.report
     end
 
+    desc "exec source|target command", "execute arbitrary command at source or target"
+    def exec(server, command)
+      raise ArgumentError, "server option must be source or target" if %w(source target).include? options[:server] 
+
+      @server = Ajimi::Server.new(
+        host: @config["#{server}_host".to_sym],
+        user: @config["#{server}_user".to_sym],
+        key: @config["#{server}_key".to_sym]
+      )
+      puts "Execute command at #{server}_host: #{@config["#{server}_host".to_sym]}\n"
+      stdout = @server.command_exec(command)
+      puts "#{stdout}"
+      puts "\n"
+    end
+
     desc "all", "check and report"
     def all(out = STDOUT)
       result = check
