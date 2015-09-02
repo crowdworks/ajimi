@@ -27,7 +27,7 @@ module Ajimi
     end
 
     desc "dir path", "diff directroy"
-    option :find_max_depth, :type => :numeric, :default => 0
+    option :find_max_depth, :type => :numeric, :default => 1
     option :ignore_pattern, :type => :string
     def dir(path)
       @config.merge!( {
