@@ -21,14 +21,27 @@ module Ajimi
         enable_check_contents: options[:enable_check_contents],
         limit_check_contents: options[:limit_check_contents]
       } )
-      @checker ||= Checker.new(@config)
-      result = @checker.check
-
-      @reporter ||= Reporter.new(@checker)
-      @reporter.report
-      result
+      _check
     end
 
+    desc "dir path", "diff directroy"
+    def dir(path)
+      @config.merge!( {
+        check_root_path: path,
+        enable_check_contents: false
+      } )
+      _check
+    end
+
+    desc "file path", "diff file"
+    def file(path)
+      @config.merge!( {
+        check_root_path: path,
+        enable_check_contents: true
+      } )
+      _check
+    end
+    
     desc "exec source|target command", "execute arbitrary command at source or target"
     def exec(server, command)
       raise ArgumentError, "server option must be source or target" if %w(source target).include? options[:server] 
@@ -44,6 +57,17 @@ module Ajimi
       puts "\n"
     end
 
+    private
+    
+    def _check
+      @checker ||= Checker.new(@config)
+      result = @checker.check
+
+      @reporter ||= Reporter.new(@checker)
+      @reporter.report
+      result
+    end
+    
   end
 
 end
