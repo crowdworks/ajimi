@@ -11,7 +11,7 @@ target_user "ec2-user"
 target_key "~/.ssh/MasayukiMORITA.pem"
 
 # check setting
-check_root_path "/root"
+check_root_path "/"
 
 ignore_paths [
   "/root/.bash_history",
