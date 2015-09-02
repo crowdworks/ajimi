@@ -49,7 +49,7 @@ describe "Ajimi::Client" do
       it "return true" do
         allow(client).to receive(:check).and_return(true)
         allow(client).to receive(:report)
-        expect(client.run).to be true
+        expect(client.all).to be true
       end
     end
 
@@ -58,7 +58,7 @@ describe "Ajimi::Client" do
       it "returns false" do
         allow(client).to receive(:check).and_return(false)
         allow(client).to receive(:report)
-        expect(client.run).to be false
+        expect(client.all).to be false
       end
     end
 

@@ -1,22 +1,30 @@
+require 'thor'
+
 module Ajimi
-  class Client
+  class Client < Thor
     attr_accessor :checker, :reporter
 
-    def initialize(config = {})
-      @config = config
+    class_option :ajimifile, :default => './Ajimifile', :desc => "Ajimifile path"
+
+    def initialize(*args)
+      super
+      @config = Ajimi::Config.load(options[:ajimifile])
     end
-    
+
+    desc "check", "check diff"
     def check
       @checker ||= Checker.new(@config)
       @checker.check
     end
 
+    desc "report", "print report"
     def report(out)
       @reporter ||= Reporter.new(@checker, out)
       @reporter.report
     end
-    
-    def run(out = STDOUT)
+
+    desc "all", "check and report"
+    def all(out = STDOUT)
       result = check
       report(out)
       result

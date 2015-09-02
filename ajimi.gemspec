@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "net-ssh", "~> 2.0"
   spec.add_runtime_dependency "diff-lcs"
+  spec.add_runtime_dependency "thor"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
