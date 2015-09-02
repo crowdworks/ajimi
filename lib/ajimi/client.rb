@@ -11,11 +11,13 @@ module Ajimi
       @config = Ajimi::Config.load(options[:ajimifile])
     end
 
-    desc "check", "check diff"
+    desc "check", "diff source and target servers"
+    option :check_root_path, :type => :string, :default => "/"
     option :enable_check_contents, :type => :boolean, :default => false
     option :limit_check_contents, :type => :numeric, :default => 0
     def check
       @config.merge!( {
+        check_root_path: options[:check_root_path],
         enable_check_contents: options[:enable_check_contents],
         limit_check_contents: options[:limit_check_contents]
       } )
