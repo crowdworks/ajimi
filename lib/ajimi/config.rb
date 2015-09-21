@@ -28,11 +28,11 @@ module Ajimi
     )
 
     CONFIG_KEYWORDS.each do |keyword|
-      define_method(keyword) do |params, *options|
-        if options.empty?
+      define_method(keyword) do |params, options = nil|
+        if options.nil?
           @config[keyword] = params
         else
-          @config[keyword] = params, *options
+          @config[keyword] = { name: params }.merge(options)
         end
       end
     end

@@ -3,23 +3,29 @@ require 'spec_helper'
 describe "Ajimi::Server" do
   describe "#host" do
     context "when server has name and no ssh_options" do
-      let(:server) { Ajimi::Server.new("name") }
+      let(:server) { Ajimi::Server.new({
+        name: "name"
+      }) }
       it "returns name" do
         expect(server.host).to eq "name"
       end
     end
 
     context "when server has name and ssh_options(with host parameter)" do
-      let(:server) { Ajimi::Server.new("name", {
-          ssh_options: { host: "host" } }) }
+      let(:server) { Ajimi::Server.new({
+        name: "name",
+        ssh_options: { host: "host" }
+      }) }
       it "returns host" do
         expect(server.host).to eq "host"
       end
     end
 
     context "when server has name and ssh_options(with no host parameter)" do
-      let(:server) { Ajimi::Server.new("name", {
-          ssh_options: { user: "user" } }) }
+      let(:server) { Ajimi::Server.new({
+        name: "name",
+        ssh_options: { user: "user" }
+      }) }
       it "returns name" do
         expect(server.host).to eq "name"
       end
@@ -35,7 +41,7 @@ describe "Ajimi::Server" do
     "/home/ec2-user, drwx------, ec2-user, ec2-user, 4096",
     "/home/ec2-user/.bash_history, -rw-------, ec2-user, ec2-user, 1705",
   ] }
-  let(:server) { Ajimi::Server.new("dummy") }
+  let(:server) { Ajimi::Server.new({ name: "dummy" }) }
 
   describe "#find" do
     it "returns sorted Array of line" do

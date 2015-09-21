@@ -6,8 +6,8 @@ module Ajimi
 
     def initialize(config)
       @config = config
-      @source = Ajimi::Server.new(*@config[:source])
-      @target = Ajimi::Server.new(*@config[:target])
+      @source = Ajimi::Server.new(@config[:source])
+      @target = Ajimi::Server.new(@config[:target])
       @check_root_path = @config[:check_root_path]
       @ignored_paths = @config[:ignored_paths] || []
       @ignored_contents = @config[:ignored_contents] || {}

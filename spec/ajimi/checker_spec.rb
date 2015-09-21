@@ -4,19 +4,21 @@ describe Ajimi::Checker do
   let(:source) { Ajimi::Server.new }
   let(:target) { Ajimi::Server.new }
   let(:config) { {
-    source: ["source_host_value", {
+    source: {
+      name: "source_host_value",
       ssh_options: {
         host: "overriden_source_host_value",
         user: "source_user_value",
         key: "source_key_value"
       }
-    }],
-    target: ["target_host_value", {
+    },
+    target: {
+      name: "target_host_value",
       ssh_options: {
         user: "target_user_value",
         key: "target_key_value"
       }
-    }],
+    },
     check_root_path: "check_root_path_value",
     ignored_paths: ["/path_to_ignored1", "/path_to_ignored2"],
     ignored_contents: ({"/path_to_content" => /ignored_pattern/}),

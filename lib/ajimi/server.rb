@@ -4,11 +4,10 @@ require 'ajimi/server/entry'
 module Ajimi
   class Server
 
-    def initialize(name, options = {})
-      @name = name
+    def initialize(options = {})
       @options = options
       @options[:ssh_options] = options[:ssh_options] || {}
-      @options[:ssh_options][:host] = options[:ssh_options][:host] || name
+      @options[:ssh_options][:host] = options[:ssh_options][:host] || options[:name]
     end
 
     def host
