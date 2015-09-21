@@ -28,7 +28,7 @@ module Ajimi
       _check
     end
 
-    desc "dir path", "diff specified directroy"
+    desc "dir <path>", "diff specified directroy"
     option :find_max_depth, :type => :numeric, :default => 1
     option :ignore_pattern, :type => :string
     def dir(path)
@@ -42,7 +42,7 @@ module Ajimi
       _check
     end
 
-    desc "file path", "diff specified file"
+    desc "file <path>", "diff specified file"
     option :ignore_pattern, :type => :string
     def file(path)
       @config.merge!( {
@@ -54,7 +54,7 @@ module Ajimi
       _check
     end
     
-    desc "exec source|target command", "execute arbitrary command at source or target"
+    desc "exec source|target <command>", "execute arbitrary command at source or target"
     def exec(server, command)
       raise ArgumentError, "server option must be source or target" unless %w(source target).include? server 
 
