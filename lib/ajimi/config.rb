@@ -25,8 +25,8 @@ module Ajimi
       target_user
       target_key
       check_root_path
-      ignore_paths
-      ignore_contents
+      ignored_paths
+      ignored_contents
       pending_paths
       pending_contents
     )

@@ -30,26 +30,26 @@ module Ajimi
 
     desc "dir <path>", "diff specified directroy"
     option :find_max_depth, :type => :numeric, :default => 1
-    option :ignore_pattern, :type => :string
+    option :ignored_pattern, :type => :string
     def dir(path)
       @config.merge!( {
         check_root_path: path,
         find_max_depth: options[:find_max_depth],
         enable_check_contents: false
       } )
-      @config[:ignore_paths] << Regexp.new(options[:ignore_pattern]) if options[:ignore_pattern]
+      @config[:ignored_paths] << Regexp.new(options[:ignored_pattern]) if options[:ignored_pattern]
 
       _check
     end
 
     desc "file <path>", "diff specified file"
-    option :ignore_pattern, :type => :string
+    option :ignored_pattern, :type => :string
     def file(path)
       @config.merge!( {
         check_root_path: path,
         enable_check_contents: true
       } )
-      @config[:ignore_contents].merge!( { path => Regexp.new(options[:ignore_pattern]) } ) if options[:ignore_pattern]
+      @config[:ignored_contents].merge!( { path => Regexp.new(options[:ignored_pattern]) } ) if options[:ignored_pattern]
 
       _check
     end
