@@ -1,14 +1,21 @@
 # Ajimi configuration file
 
 # source setting
-source_host "source.example.com"
-source_user "ec2-user"
-source_key "~/.ssh/id_rsa"
+source "source.example.com", {
+  ssh_options: {
+    host: "192.168.0.1",
+    user: "ec2-user"
+    key: "~/.ssh/id_rsa"
+  }
+}
 
 # target setting
-target_host "target.example.com"
-target_user "ec2-user"
-target_key "~/.ssh/id_rsa"
+target "target.example.com", {
+  ssh_options: {
+    user: "ec2-user"
+    key: "~/.ssh/id_rsa"
+  }
+}
 
 # check setting
 check_root_path "/"

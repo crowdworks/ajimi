@@ -6,16 +6,8 @@ module Ajimi
 
     def initialize(config)
       @config = config
-      @source = Ajimi::Server.new(
-        host: @config[:source_host],
-        user: @config[:source_user],
-        key: @config[:source_key]
-      )
-      @target = Ajimi::Server.new(
-        host: @config[:target_host],
-        user: @config[:target_user],
-        key: @config[:target_key]
-      )
+      @source = Ajimi::Server.new(*@config[:source])
+      @target = Ajimi::Server.new(*@config[:target])
       @check_root_path = @config[:check_root_path]
       @ignored_paths = @config[:ignored_paths] || []
       @ignored_contents = @config[:ignored_contents] || {}
@@ -30,10 +22,10 @@ module Ajimi
     def check
       puts_verbose "Start ajimi check with options: #{@config}\n"
 
-      puts_verbose "Finding...: #{@config[:source_host]}\n"
+      puts_verbose "Finding...: #{@source.host}\n"
       @source_find = @source.find(@check_root_path, @find_max_depth)
 
-      puts_verbose "Finding...: #{@config[:target_host]}\n"
+      puts_verbose "Finding...: #{@target.host}\n"
       @target_find = @target.find(@check_root_path, @find_max_depth)
 
       puts_verbose "Checking diff entries...\n"

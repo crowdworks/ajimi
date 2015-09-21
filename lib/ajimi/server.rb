@@ -3,16 +3,20 @@ require 'ajimi/server/entry'
 
 module Ajimi
   class Server
-    def initialize(options = {})
+
+    def initialize(name, options = {})
+      @name = name
       @options = options
+      @options[:ssh_options] = options[:ssh_options] || {}
+      @options[:ssh_options][:host] = options[:ssh_options][:host] || name
     end
 
     def host
-      @options[:host]
+      @options[:ssh_options][:host]
     end
 
     def backend
-      @backend ||= Ajimi::Server::Ssh.new(@options)
+      @backend ||= Ajimi::Server::Ssh.new(@options[:ssh_options])
     end
 
     def command_exec(cmd)

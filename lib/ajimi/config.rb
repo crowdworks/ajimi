@@ -18,12 +18,8 @@ module Ajimi
     end
 
     CONFIG_KEYWORDS = %i(
-      source_host
-      source_user
-      source_key
-      target_host
-      target_user
-      target_key
+      source
+      target
       check_root_path
       ignored_paths
       ignored_contents
@@ -32,7 +28,13 @@ module Ajimi
     )
 
     CONFIG_KEYWORDS.each do |keyword|
-      define_method(keyword) { |param| @config[keyword] = param }
+      define_method(keyword) do |params, *options|
+        if options.empty?
+          @config[keyword] = params
+        else
+          @config[keyword] = params, *options
+        end
+      end
     end
 
   end
