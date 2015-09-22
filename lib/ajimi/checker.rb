@@ -2,7 +2,8 @@ require 'diff/lcs'
 
 module Ajimi
   class Checker
-    attr_accessor :diffs, :result, :source, :target, :diff_contents_cache, :enable_check_contents
+    attr_accessor :diffs, :result, :source, :target, :diff_contents_cache, :enable_check_contents,
+      :ignored_by_path, :pending_by_path, :ignored_by_content, :pending_by_content
 
     def initialize(config)
       @config = config
