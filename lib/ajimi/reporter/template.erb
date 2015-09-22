@@ -1,0 +1,26 @@
+###### diff entries report ######
+--- <%= @checker.source.host %>
++++ <%= @checker.target.host %>
+
+<%- @checker.diffs.each do |diff| -%>
+  <%- diff.each do |change| -%>
+<%= change.action + " " + change.position.to_s + " " + change.element.to_s %>
+  <%- end -%>
+<%- end -%>
+
+###### diff contents report ######
+<%- if @checker.enable_check_contents -%>
+<%= @checker.diff_contents_cache -%>
+<%- else -%>
+check_contents was skipped (enable_check_contents = false)
+<%- end -%>
+
+###### diff summary report ######
+source: <%= @checker.source_file_count %> files
+target: <%= @checker.target_file_count %> files
+ignored_by_path: <%= @checker.ignored_by_path_file_count %> files
+pending_by_path: <%= @checker.pending_by_path_file_count %> files
+ignored_by_content: <%= @checker.ignored_by_content_file_count %> files
+pending_by_content: <%= @checker.pending_by_content_file_count %> files
+diff: <%= @checker.diff_file_count %> files
+

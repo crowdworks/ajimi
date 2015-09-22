@@ -58,28 +58,27 @@ describe "Ajimi::Reporter" do
         checker.diffs = diffs
         checker.diff_contents_cache = diff_contents_cache
         checker.enable_check_contents = true
-        report_output =
-          "###### diff entries report ######\n" +
-          "--- source_host_value\n" +
-          "+++ target_host_value\n" +
-          "\n" +
-          "- " + "1 " + entry2.to_s + "\n" +
-          "- " + "2 " + entry3.to_s + "\n" +
-          "+ " + "1 " + entry3_changed.to_s + "\n" +
-          "\n" +
-          "###### diff contents report ######\n" +
-          diff_contents_cache +
-          "\n" +
-          "###### diff summary report ######\n" +
-          "source: #{source_file_count} files\n" +
-          "target: #{target_file_count} files\n" +
-          "ignored_by_path: #{ignored_by_path_file_count} files\n" +
-          "pending_by_path: #{pending_by_path_file_count} files\n" +
-          "ignored_by_content: #{ignored_by_content_file_count} files\n" +
-          "pending_by_content: #{pending_by_content_file_count} files\n" +
-          "diff: #{uniq_diff_file_count} files\n" +
-          "\n"
+        report_output = <<-"EOS"
+###### diff entries report ######
+--- source_host_value
++++ target_host_value
 
+- 1 #{entry2.to_s}
+- 2 #{entry3.to_s}
++ 1 #{entry3_changed.to_s}
+
+###### diff contents report ######
+#{diff_contents_cache}
+###### diff summary report ######
+source: #{source_file_count} files
+target: #{target_file_count} files
+ignored_by_path: #{ignored_by_path_file_count} files
+pending_by_path: #{pending_by_path_file_count} files
+ignored_by_content: #{ignored_by_content_file_count} files
+pending_by_content: #{pending_by_content_file_count} files
+diff: #{uniq_diff_file_count} files
+
+        EOS
         expect{ reporter.report }.to output(report_output).to_stdout
       end
     end
