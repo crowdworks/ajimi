@@ -9,13 +9,15 @@ source "source_host_value", {
     host: "overriden_source_host_value",
     user: "source_user_value",
     key: "source_key_value"
-  }
+  },
+  enable_nice: true
 }
 target "target_host_value", {
   ssh_options: {
     user: "target_user_value",
     key: "target_key_value"
-  }
+  },
+  enable_nice: false
 }
 check_root_path "check_root_path_value"
 pruned_paths [
@@ -45,14 +47,16 @@ pending_contents ({
             host: "overriden_source_host_value",
             user: "source_user_value",
             key: "source_key_value"
-          }
+          },
+          enable_nice: true
         }
       )),
       target: (Ajimi::Server.new("target_host_value", {
           ssh_options: {
             user: "target_user_value",
             key: "target_key_value"
-          }
+          },
+          enable_nice: false
         }
       )),
       check_root_path: "check_root_path_value",

@@ -6,7 +6,8 @@ source "source.example.com", {
     host: "192.168.0.1",
     user: "ec2-user",
     key: "~/.ssh/id_rsa"
-  }
+  },
+  enable_nice: true
 }
 
 # target setting
@@ -14,7 +15,8 @@ target "target.example.com", {
   ssh_options: {
     user: "ec2-user",
     key: "~/.ssh/id_rsa"
-  }
+  },
+  enable_nice: false
 }
 
 # check setting
