@@ -20,12 +20,16 @@ target "target.example.com", {
 # check setting
 check_root_path "/"
 
+pruned_paths [
+  "/dev",
+  "/proc",
+]
+
 ignored_paths [
   %r|^/dev/?.*|,
   %r|^/lost\+found/?.*|,
   %r|^/media/?.*|,
   %r|^/mnt/?.*|,
-  %r|^/proc/?.*|,
   %r|^/run/?.*|,
   %r|^/sys/?.*|,
   %r|^/tmp/?.*|

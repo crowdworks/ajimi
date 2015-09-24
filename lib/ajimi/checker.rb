@@ -9,6 +9,7 @@ module Ajimi
       @source = @config[:source]
       @target = @config[:target]
       @check_root_path = @config[:check_root_path]
+      @pruned_paths = @config[:pruned_paths] || []
       @ignored_paths = @config[:ignored_paths] || []
       @ignored_contents = @config[:ignored_contents] || {}
       @pending_paths = @config[:pending_paths] || []
@@ -23,10 +24,10 @@ module Ajimi
       puts_verbose "Start ajimi check with options: #{@config}\n"
 
       puts_verbose "Finding...: #{@source.host}\n"
-      @source_find = @source.find(@check_root_path, @find_max_depth)
+      @source_find = @source.find(@check_root_path, @find_max_depth, @pruned_paths)
 
       puts_verbose "Finding...: #{@target.host}\n"
-      @target_find = @target.find(@check_root_path, @find_max_depth)
+      @target_find = @target.find(@check_root_path, @find_max_depth, @pruned_paths)
 
       puts_verbose "Checking diff entries...\n"
       @diffs = diff_entries(@source_find, @target_find)

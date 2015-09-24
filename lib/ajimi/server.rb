@@ -28,11 +28,8 @@ module Ajimi
       backend.command_exec(cmd)
     end
     
-    def find(dir, find_max_depth = nil)
-      cmd = "sudo find #{dir} -ls"
-      cmd += " -maxdepth #{find_max_depth}" if find_max_depth
-      cmd += " -path /dev -prune -o -path /proc -prune"
-      cmd += " | awk  '{printf \"%s, %s, %s, %s, %s\\n\", \$11, \$3, \$5, \$6, \$7}'"
+    def find(dir, find_max_depth = nil, pruned_paths = [])
+      cmd = build_find_cmd(dir, find_max_depth, pruned_paths)
       stdout = command_exec(cmd)
       stdout.split(/\n/).map {|line| line.chomp }.sort
     end
@@ -49,6 +46,20 @@ module Ajimi
     def cat_or_md5sum(file)
       stdout = command_exec("if (sudo file -b #{file} | grep text > /dev/null 2>&1) ; then (sudo cat #{file}) else (sudo md5sum #{file}) fi")
       stdout.split(/\n/).map {|line| line.chomp }
+    end
+
+    private
+
+    def build_find_cmd(dir, find_max_depth  = nil, pruned_paths = [])
+      cmd = "sudo find #{dir} -ls"
+      cmd += " -maxdepth #{find_max_depth}" if find_max_depth
+      cmd += build_pruned_paths_option(pruned_paths)
+      cmd += " | awk  '{printf \"%s, %s, %s, %s, %s\\n\", \$11, \$3, \$5, \$6, \$7}'"
+    end
+
+    def build_pruned_paths_option(pruned_paths = [])
+      return "" if pruned_paths.empty?
+      pruned_paths.map{ |path| " -path #{path} -prune" }.join(" -o")
     end
 
   end

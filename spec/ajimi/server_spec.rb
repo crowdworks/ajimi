@@ -62,4 +62,59 @@ describe "Ajimi::Server" do
       expect(server.command_exec("echo hoge")).to eq "hoge"
     end
   end
+
+  describe "#build_find_cmd" do
+    describe "with dir options" do
+      it "includes dir -ls" do
+        expect(server.send(:build_find_cmd, "/etc")).to match %r|/etc \-ls|
+      end
+    end
+
+    describe "with find_max_depth option" do
+      context "when find_max_depth is nil" do
+        it "does not include -find_max_depth" do
+          expect(server.send(:build_find_cmd, "/etc")).not_to match %r|\-maxdepth|
+        end
+      end
+
+      context "when find_max_depth is not nil" do
+        it "includes -find_max_depth" do
+          expect(server.send(:build_find_cmd, "/etc", 4)).to match %r|\-maxdepth 4|
+        end
+      end
+    end
+
+    describe "with pruned_paths option" do
+      context "when pruned_paths are empty" do
+        it "does not include -prune" do
+          expect(server.send(:build_find_cmd, "/etc")).not_to match %r|\-prune|
+        end
+      end
+
+      context "when pruned_paths are not empty" do
+        it "includes -prune" do
+          expect(server.send(:build_find_cmd, "/etc", 4, ["/dev", "/proc"])).to match %r|\-prune|
+        end
+      end
+    end
+  end
+
+  describe "#build_pruned_paths_option" do
+    context "when pruned_paths are empty array" do
+      it "returns empty string" do
+        expect(server.send(:build_pruned_paths_option)).to eq ""
+      end
+    end
+
+    context "when pruned_paths are not empty array" do
+      it "returns a 1 prune path" do
+        expect(server.send(:build_pruned_paths_option, ["/dev"])).to eq " -path /dev -prune"
+      end
+
+      it "returns 2 prune paths joined with -o" do
+        expect(server.send(:build_pruned_paths_option, ["/dev", "/proc"])).to eq " -path /dev -prune -o -path /proc -prune"
+      end
+    end
+  end
+
 end

@@ -18,6 +18,10 @@ target "target_host_value", {
   }
 }
 check_root_path "check_root_path_value"
+pruned_paths [
+  "/path_to_pruned1",
+  "/path_to_pruned2"
+]
 ignored_paths [
   "/path_to_ignored1",
   "/path_to_ignored2"
@@ -52,6 +56,7 @@ pending_contents ({
         }
       )),
       check_root_path: "check_root_path_value",
+      pruned_paths: ["/path_to_pruned1", "/path_to_pruned2"],
       ignored_paths: ["/path_to_ignored1", "/path_to_ignored2"],
       ignored_contents: { "/path_to_content" => /ignored_pattern/ },
       pending_paths: ["/path_to_pending1", "/path_to_pending2"],
