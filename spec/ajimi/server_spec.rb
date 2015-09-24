@@ -84,7 +84,7 @@ describe "Ajimi::Server" do
 
       context "when enable_nice option is true" do
         it "is wrapped in nice and ionice commands" do
-          expect(server.send(:build_find_cmd, "/etc", nil, [], true)).to match %r|nice \-n 19 ionice \-c 3 find|
+          expect(server.send(:build_find_cmd, "/etc", nil, [], true)).to match %r|nice \-n 19 ionice \-c 2 -n 7 find|
         end
       end
     end

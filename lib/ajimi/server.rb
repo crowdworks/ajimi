@@ -53,7 +53,7 @@ module Ajimi
 
     def build_find_cmd(dir, find_max_depth  = nil, pruned_paths = [], enable_nice = false)
       cmd = "sudo"
-      cmd += " nice -n 19 ionice -c 3" if enable_nice
+      cmd += " nice -n 19 ionice -c 2 -n 7" if enable_nice
       cmd += " find #{dir} -ls"
       cmd += " -maxdepth #{find_max_depth}" if find_max_depth
       cmd += build_pruned_paths_option(pruned_paths)
