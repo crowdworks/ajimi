@@ -51,7 +51,8 @@ module Ajimi
     private
 
     def build_find_cmd(dir, find_max_depth  = nil, pruned_paths = [])
-      cmd = "sudo find #{dir} -ls"
+      cmd = "sudo nice -n 19 ionice -c 3 -n 7"
+      cmd += " find #{dir} -ls"
       cmd += " -maxdepth #{find_max_depth}" if find_max_depth
       cmd += build_pruned_paths_option(pruned_paths)
       cmd += " | awk  '{printf \"%s, %s, %s, %s, %s\\n\", \$11, \$3, \$5, \$6, \$7}'"

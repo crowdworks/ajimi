@@ -64,6 +64,12 @@ describe "Ajimi::Server" do
   end
 
   describe "#build_find_cmd" do
+    describe "with nice and ionice commands" do
+      it "is wrapped in nice and ionice commands" do
+        expect(server.send(:build_find_cmd, "/etc")).to match %r|nice \-n 19 ionice \-c 3 \-n 7 find|
+      end
+    end
+
     describe "with dir options" do
       it "includes dir -ls" do
         expect(server.send(:build_find_cmd, "/etc")).to match %r|/etc \-ls|
