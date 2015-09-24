@@ -4,7 +4,7 @@
 
 <%- @checker.diffs.each do |diff| -%>
   <%- diff.each do |change| -%>
-<%= change.action + " " + change.position.to_s + " " + change.element.to_s %>
+<%= "#{change.action} #{change.position} #{change.element}" %>
   <%- end -%>
 <%- end -%>
 
