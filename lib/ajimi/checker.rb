@@ -78,21 +78,37 @@ module Ajimi
 
     def filter_paths(diffs, filter_paths = [])
       filtered = []
+      last_matched_pattern = nil
       diffs.each do |diff|
         diff.each do |change|
+          # check the last matched pattern first for performance improvement
+          if last_matched_pattern && mathed_path = filter_path(change.element.path, last_matched_pattern)
+            filtered << mathed_path
+            next
+          end
+
           filter_paths.each do |pattern|
-            case pattern
-            when String
-              filtered << change.element.path if change.element.path == pattern
-            when Regexp
-              filtered << change.element.path if change.element.path.match pattern
-            else
-              raise TypeError, "Unknown type in ignored_paths"
+            if mathed_path = filter_path(change.element.path, pattern)
+              filtered <<  mathed_path
+              last_matched_pattern = pattern
+              next
             end
           end
         end
       end
       filtered.uniq.sort
+    end
+
+    def filter_path(path, pattern)
+      case pattern
+      when String
+        return path if path == pattern
+      when Regexp
+        return path if path.match pattern
+      else
+        raise TypeError, "Unknown type in ignore_paths"
+      end
+      return nil
     end
 
     def filter_ignored_and_pending_contents(diffs, ignored_contents, pending_contents, limit_check_contents)

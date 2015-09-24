@@ -187,18 +187,37 @@ describe Ajimi::Checker do
       end
     end
 
-    context "when filter list has unknown type" do
-      let(:source_find) { [source_find1, source_find3, source_find4] }
-      let(:target_find) { [target_find1, target_find2, target_find3_changed] }
-      let(:filter_paths) { [1, 2, 3] }
+  end
 
-      it "raise_error TypeError" do
-        expect{ checker.filter_paths(diffs, filter_paths) }.to raise_error(TypeError)
+  describe "#filter_path" do
+    context "when pattern is String" do
+      it "returns path if matched" do
+        expect(checker.filter_path("/root", "/root")).to eq "/root"
+      end
+
+      it "returns nil if not matched" do
+        expect(checker.filter_path("/root/.bash_history", "/root")).to eq nil
+      end
+    end
+
+    context "when pattern is Regexp" do
+      it "returns path if matched" do
+        expect(checker.filter_path("/root/.bash_history", %r|^/root|)).to eq "/root/.bash_history"
+      end
+
+      it "returns nil if not matched" do
+        expect(checker.filter_path("/root/.bash_history", %r|^/root$|)).to eq nil
+      end
+    end
+
+    context "when pattern is unknown type" do
+      it "raises TypeError" do
+        expect{ checker.filter_path("/root", 1) }.to raise_error(TypeError)
       end
     end
 
   end
-  
+
   describe "#uniq_diff_file_paths" do
       let(:source_find) { [source_find1, source_find2, source_find3] }
       let(:target_find) { [target_find1_changed, target_find2_changed, target_find3_changed] }
