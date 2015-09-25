@@ -4,7 +4,7 @@ describe "Ajimi::Reporter" do
   describe "#report" do
     let(:config) { {
       source: (Ajimi::Server.new("source_host_value")),
-      target: (Ajimi::Server.new("target_host_value"))
+      target: (Ajimi::Server.new("target_host_value")),
       check_root_path: "check_root_path_value",
       ignored_paths: ["/path_to_ignored1", "/path_to_ignored2"],
       ignored_contents: ({"/path_to_content" => /ignored_pattern/})
