@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "Ajimi::Client" do
   let(:client) { Ajimi::Client.new }
   let(:config) { {
-    source: { name: "source_host_value" },
-    target: { name: "target_host_value" },
+    source: (Ajimi::Server.new("source_host_value")),
+    target: (Ajimi::Server.new("target_host_value")),
     check_root_path: "check_root_path_value",
     ignored_paths: ["/path_to_ignored1", "/path_to_ignored2"],
     ignored_contents: ({"/path_to_content" => /ignored_pattern/})

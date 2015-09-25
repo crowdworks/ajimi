@@ -2,4 +2,5 @@
 
 require 'ajimi'
 
+STDOUT.sync = true
 Ajimi::Client.start

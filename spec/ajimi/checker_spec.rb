@@ -192,13 +192,13 @@ describe Ajimi::Checker do
       let(:target_find) { [target_find1, target_find2, target_find3_changed] }
       let(:filter_paths) { [1, 2, 3] }
 
-      it "raise_error TypeError" do
+      it "raises error TypeError" do
         expect{ checker.filter_paths(diffs, filter_paths) }.to raise_error(TypeError)
       end
     end
 
   end
-  
+
   describe "#uniq_diff_file_paths" do
       let(:source_find) { [source_find1, source_find2, source_find3] }
       let(:target_find) { [target_find1_changed, target_find2_changed, target_find3_changed] }

@@ -6,7 +6,8 @@ source "source.example.com", {
     host: "192.168.0.1",
     user: "ec2-user",
     key: "~/.ssh/id_rsa"
-  }
+  },
+  enable_nice: true
 }
 
 # target setting
@@ -14,18 +15,23 @@ target "target.example.com", {
   ssh_options: {
     user: "ec2-user",
     key: "~/.ssh/id_rsa"
-  }
+  },
+  enable_nice: false
 }
 
 # check setting
 check_root_path "/"
 
+pruned_paths [
+  "/dev",
+  "/proc",
+]
+
 ignored_paths [
-  %r|^/dev/?.*|,
+  *@config[:pruned_paths],
   %r|^/lost\+found/?.*|,
   %r|^/media/?.*|,
   %r|^/mnt/?.*|,
-  %r|^/proc/?.*|,
   %r|^/run/?.*|,
   %r|^/sys/?.*|,
   %r|^/tmp/?.*|
