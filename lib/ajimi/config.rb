@@ -28,12 +28,14 @@ module Ajimi
     )
 
     CONFIG_KEYWORDS.each do |keyword|
-      define_method(keyword) do |params, options = nil|
-        if options.nil?
-          @config[keyword] = params
-        else
-          @config[keyword] = { name: params }.merge(options)
-        end
+      define_method(keyword) do |args|
+        @config[keyword] = args
+      end
+    end
+
+    %i| source target |.each do |server_role|
+      define_method server_role do |*args|
+        @config[server_role] = Ajimi::Server.new(*args)
       end
     end
 
