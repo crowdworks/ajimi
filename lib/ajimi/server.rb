@@ -61,7 +61,6 @@ module Ajimi
     end
 
     def build_pruned_paths_option(pruned_paths = [])
-      return "" if pruned_paths.empty?
       pruned_paths.map{ |path| " -path #{path} -prune" }.join(" -o")
     end
 
