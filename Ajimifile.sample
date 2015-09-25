@@ -28,7 +28,7 @@ pruned_paths [
 ]
 
 ignored_paths [
-  %r|^/dev/?.*|,
+  *@config[:pruned_paths],
   %r|^/lost\+found/?.*|,
   %r|^/media/?.*|,
   %r|^/mnt/?.*|,
