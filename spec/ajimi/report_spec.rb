@@ -3,12 +3,8 @@ require 'spec_helper'
 describe "Ajimi::Reporter" do
   describe "#report" do
     let(:config) { {
-      source_host: "source_host_value",
-      source_user: "source_user_value",
-      source_key: "source_key_value",
-      target_host: "target_host_value",
-      target_user: "target_user_value",
-      target_key: "target_key_value",
+      source: (Ajimi::Server.new("source_host_value")),
+      target: (Ajimi::Server.new("target_host_value")),
       check_root_path: "check_root_path_value",
       ignored_paths: ["/path_to_ignored1", "/path_to_ignored2"],
       ignored_contents: ({"/path_to_content" => /ignored_pattern/})
