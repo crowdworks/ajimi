@@ -13,7 +13,7 @@ target_key "~/.ssh/id_rsa"
 # check setting
 check_root_path "/"
 
-ignore_paths [
+ignored_paths [
   %r|^/dev/?.*|,
   %r|^/lost\+found/?.*|,
   %r|^/media/?.*|,
@@ -24,7 +24,7 @@ ignore_paths [
   %r|^/tmp/?.*|
 ]
 
-ignore_contents ({
+ignored_contents ({
   "/root/.ssh/authorized_keys" => /Please login as the user \\"ec2-user\\" rather than the user \\"root\\"/
 })
 

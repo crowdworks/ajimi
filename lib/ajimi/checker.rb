@@ -17,8 +17,8 @@ module Ajimi
         key: @config[:target_key]
       )
       @check_root_path = @config[:check_root_path]
-      @ignore_paths = @config[:ignore_paths] || []
-      @ignore_contents = @config[:ignore_contents] || {}
+      @ignored_paths = @config[:ignored_paths] || []
+      @ignored_contents = @config[:ignored_contents] || {}
       @pending_paths = @config[:pending_paths] || []
       @pending_contents = @config[:pending_contents] || {}
       @enable_check_contents = @config[:enable_check_contents] || false
@@ -39,12 +39,12 @@ module Ajimi
       puts_verbose "Checking diff entries...\n"
       @diffs = diff_entries(@source_find, @target_find)
 
-      puts_verbose "Checking ignore_paths and pending_paths...\n"
-      @diffs = ignore_and_pending_paths(@diffs, @ignore_paths, @pending_paths)
+      puts_verbose "Checking ignored_paths and pending_paths...\n"
+      @diffs = filter_ignored_and_pending_paths(@diffs, @ignored_paths, @pending_paths)
 
       if @enable_check_contents
-        puts_verbose "Checking ignore_contents and pending_contents...\n"
-        @diffs = ignore_and_pending_contents(@diffs, @ignore_contents, @pending_contents, @limit_check_contents)
+        puts_verbose "Checking ignored_contents and pending_contents...\n"
+        @diffs = filter_ignored_and_pending_contents(@diffs, @ignored_contents, @pending_contents, @limit_check_contents)
       end
 
       puts_verbose "Diffs empty?: #{@diffs.empty?}\n"
@@ -70,9 +70,9 @@ module Ajimi
       end
     end
 
-    def ignore_and_pending_paths(diffs, ignore_paths, pending_paths)
-      if !ignore_paths.empty?
-        @ignored_by_path = filter_paths(diffs, ignore_paths)
+    def filter_ignored_and_pending_paths(diffs, ignored_paths, pending_paths)
+      if !ignored_paths.empty?
+        @ignored_by_path = filter_paths(diffs, ignored_paths)
         diffs = remove_entry_from_diffs(diffs, @ignored_by_path)
       end
       
@@ -94,7 +94,7 @@ module Ajimi
             when Regexp
               filtered << change.element.path if change.element.path.match pattern
             else
-              raise TypeError, "Unknown type in ignore_paths"
+              raise TypeError, "Unknown type in ignored_paths"
             end
           end
         end
@@ -102,7 +102,7 @@ module Ajimi
       filtered.uniq.sort
     end
 
-    def ignore_and_pending_contents(diffs, ignore_contents, pending_contents, limit_check_contents)
+    def filter_ignored_and_pending_contents(diffs, ignored_contents, pending_contents, limit_check_contents)
       @ignored_by_content = []
       @pending_by_content = []
       @diff_contents_cache = ""
@@ -111,7 +111,7 @@ module Ajimi
       diff_files = diff_files.slice(0, limit_check_contents) if limit_check_contents > 0
       diff_files.each do |file|
         diff_file_result = diff_file(file)
-        ignored_diff_file_result = filter_diff_file(diff_file_result, ignore_contents[file])
+        ignored_diff_file_result = filter_diff_file(diff_file_result, ignored_contents[file])
         if ignored_diff_file_result.flatten.empty?
           @ignored_by_content << file
         else
