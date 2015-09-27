@@ -13,7 +13,7 @@ module Ajimi
       @config[:verbose] = options[:verbose] unless options[:verbose].nil?
     end
 
-    desc "check", "diff source and target servers"
+    desc "check", "Diff source and target servers"
     option :check_root_path, :type => :string
     option :find_max_depth, :type => :numeric
     option :enable_check_contents, :type => :boolean, :default => false
@@ -28,7 +28,7 @@ module Ajimi
       _check
     end
 
-    desc "dir <path>", "diff specified directroy"
+    desc "dir <path>", "Diff specified directroy"
     option :find_max_depth, :type => :numeric, :default => 1
     option :ignored_pattern, :type => :string
     def dir(path)
@@ -42,7 +42,7 @@ module Ajimi
       _check
     end
 
-    desc "file <path>", "diff specified file"
+    desc "file <path>", "Diff specified file"
     option :ignored_pattern, :type => :string
     def file(path)
       @config.merge!( {
@@ -54,7 +54,7 @@ module Ajimi
       _check
     end
     
-    desc "exec source|target <command>", "execute arbitrary command at source or target"
+    desc "exec source|target <command>", "Execute arbitrary command at source or target"
     def exec(server, command)
       raise ArgumentError, "server option must be source or target" unless %w(source target).include? server 
 
