@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["masayuki.morita@crowdworks.co.jp"]
 
   spec.summary       = %q{server diff tool}
-  spec.description   = %q{server diff tool}
+  spec.description   = %q{Ajimi is a server diff tool which compares the difference between any two server's files. It helps you to find the configuration difference in a large number of files.}
   spec.homepage      = "https://github.com/crowdworks/ajimi"
   spec.license       = "MIT"
 
