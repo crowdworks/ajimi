@@ -91,13 +91,13 @@ The following arguments are supported in the Ajimifile:
 
 * `source` - String (Required), Hash (Required): Source server's name and options. Options are as follows.
   * `ssh_options` - Hash (Required): SSH connection options
-      * `host` - String (Optional): SSH hostame, FQDN or IP address. Default is name of `source`.
+      * `host` - String (Optional): SSH hostname, FQDN or IP address. Default is name of `source`.
       * `user` - String (Required): SSH username.
       * `key` - String (Required): Path to user's SSH secret key.
     * `enable_nice` - Boolean (Optional): If true, the find process is wrapped by nice and ionice to lower load. Default is false. 
 * `target` - String (Required): Target server's name and options. Options are the same as source.
 * `check_root_path` - String (Required): Root path to check. If "/", Ajimi checks in the whole filesystem.
-* `pruned_paths` - Array[String|Regexp] (Optional): List of the path which should be excluded in the find process. Note that `pruned_paths` is better peformance than `ignored_paths`/`pending_paths`.
+* `pruned_paths` - Array[String|Regexp] (Optional): List of the path which should be excluded in the find process. Note that `pruned_paths` is better performance than `ignored_paths`/`pending_paths`.
 * `ignored_paths` - Array[String|Regexp] (Optional): List of the path which should be ignored as known difference.
 * `ignored_contents` - Hash{String => String|Regexp} (Optional): Hash of the path => pattern which should be ignored as known difference for each of the content.
 * `pending_paths`- Array[String|Regexp] (Optional): List of the path which should be resolved later but ignored temporarily as known difference.
