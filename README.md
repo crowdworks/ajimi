@@ -1,7 +1,7 @@
 # Ajimi
 
-Ajimi is a server diff tool which compares the difference between any two server's files.
-It helps you to find the configuration difference in a large number of files.
+Ajimi is a tool to compare servers by their files to shows difference in their configurations.
+It is useful to achieve some kind of a regression test against a server by finding unexpected changes to its configuration file after running Chef, Ansible, or your own provisioning tool.
 
 'Ajimi' means 'tasting' in Japanese. It was developed for originally replacing the existing server with the Chef's cookbook, but can be used for a general purpose of comparing two servers.
 
@@ -112,10 +112,10 @@ To view a list of the available commands , just run `ajimi` with no arguments:
 ```
 $ ajimi
 Commands:
-  ajimi check                         # Diff source and target servers
-  ajimi dir <path>                    # Diff specified directroy
-  ajimi exec source|target <command>  # Execute arbitrary command at source or target
-  ajimi file <path>                   # Diff specified file
+  ajimi check                         # Show differences between the source and the target server
+  ajimi dir <path>                    # Show differences between the source and the target server in the specified directory
+  ajimi exec source|target <command>  # Execute an arbitrary command on the source or the target server
+  ajimi file <path>                   # Show differences between the source and the target server in the specified file
   ajimi help [COMMAND]                # Describe available commands or one specific command
 
 Options:
@@ -156,10 +156,10 @@ Finally, resolve issues and remove `pending_paths` or `pending_contents`.
 ```
 $ ajimi
 Commands:
-  ajimi check                         # Diff source and target servers
-  ajimi dir <path>                    # Diff specified directroy
-  ajimi exec source|target <command>  # Execute arbitrary command at source or target
-  ajimi file <path>                   # Diff specified file
+  ajimi check                         # Show differences between the source and the target server
+  ajimi dir <path>                    # Show differences between the source and the target server in the specified directory
+  ajimi exec source|target <command>  # Execute an arbitrary command on the source or the target server
+  ajimi file <path>                   # Show differences between the source and the target server in the specified file
   ajimi help [COMMAND]                # Describe available commands or one specific command
 
 Options:
@@ -185,7 +185,7 @@ Options:
   [--verbose], [--no-verbose]
                                                            # Default: true
 
-Diff source and target servers
+Show differences between the source and the target server
 ```
 
 ```
@@ -202,7 +202,7 @@ Options:
   [--verbose], [--no-verbose]
                                        # Default: true
 
-Diff specified directroy
+Show differences between the source and the target server in the specified directory
 ```
 
 ```
@@ -217,7 +217,7 @@ Options:
   [--verbose], [--no-verbose]
                                        # Default: true
 
-Diff specified file
+Show differences between the source and the target server in the specified file
 ```
 
 ```
@@ -231,7 +231,7 @@ Options:
   [--verbose], [--no-verbose]
                                # Default: true
 
-Execute arbitrary command at source or target
+Execute an arbitrary command on the source or the target server
 ```
 
 ## Development and Test
