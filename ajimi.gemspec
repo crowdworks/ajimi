@@ -10,17 +10,9 @@ Gem::Specification.new do |spec|
   spec.email         = ["masayuki.morita@crowdworks.co.jp"]
 
   spec.summary       = %q{server diff tool}
-  spec.description   = %q{server diff tool}
+  spec.description   = %q{Ajimi is a tool to compare servers by their files to shows difference in their configurations. It is useful to achieve some kind of a regression test against a server by finding unexpected changes to its configuration file after running Chef, Ansible, or your own provisioning tool.}
   spec.homepage      = "https://github.com/crowdworks/ajimi"
   spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
