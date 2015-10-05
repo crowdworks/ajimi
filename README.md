@@ -33,7 +33,7 @@ And then edit Ajimifile:
 
 A sample configuration looks like the following:
 
-```
+```ruby
 # Ajimi configuration file
 
 # source setting
@@ -109,7 +109,7 @@ Ajimi is a single command-line application: `ajimi`.
 It takes a subcommand such as `check` or `exec`.
 To view a list of the available commands , just run `ajimi` with no arguments:
 
-```
+```bash
 $ ajimi
 Commands:
   ajimi check                         # Show differences between the source and the target server
@@ -153,7 +153,7 @@ Finally, resolve issues and remove `pending_paths` or `pending_contents`.
 
 ## Command reference
 
-```
+```bash
 $ ajimi
 Commands:
   ajimi check                         # Show differences between the source and the target server
@@ -169,7 +169,7 @@ Options:
                                # Default: true
 ```
 
-```
+```bash
 $ ajimi help check
 Usage:
   ajimi check
@@ -188,7 +188,7 @@ Options:
 Show differences between the source and the target server
 ```
 
-```
+```bash
 $ ajimi help dir
 Usage:
   ajimi dir <path>
@@ -205,7 +205,7 @@ Options:
 Show differences between the source and the target server in the specified directory
 ```
 
-```
+```bash
 $ ajimi help file
 Usage:
   ajimi file <path>
@@ -220,7 +220,7 @@ Options:
 Show differences between the source and the target server in the specified file
 ```
 
-```
+```bash
 $ ajimi help exec
 Usage:
   ajimi exec source|target <command>
