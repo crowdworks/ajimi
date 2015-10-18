@@ -53,10 +53,10 @@ module Ajimi
 
       _check
     end
-    
+
     desc "exec source|target <command>", "Execute an arbitrary command on the source or the target server"
     def exec(server, command)
-      raise ArgumentError, "server option must be source or target" unless %w(source target).include? server 
+      raise ArgumentError, "server option must be source or target" unless %w(source target).include? server
 
       @server = @config[server.to_sym]
       puts "Execute command at #{server}_host: #{@server.host}\n"
@@ -66,7 +66,7 @@ module Ajimi
     end
 
     private
-    
+
     def _check
       @checker ||= Checker.new(@config)
       result = @checker.check
@@ -75,7 +75,7 @@ module Ajimi
       @reporter.report
       result
     end
-    
+
   end
 
 end
