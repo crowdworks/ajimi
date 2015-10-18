@@ -15,9 +15,9 @@ module Ajimi
     end
 
     desc "[check]", "(Default subcommand) Show differences between the source and the target server"
-    option :check_root_path, :type => :string
-    option :find_max_depth, :type => :numeric
-    option :enable_check_contents, :type => :boolean, :default => false
+    option :check_root_path, :aliases => "-r", :type => :string
+    option :find_max_depth, :aliases => "-d", :type => :numeric
+    option :enable_check_contents, :aliases => "-c", :type => :boolean, :default => false
     option :limit_check_contents, :type => :numeric, :default => 0
     def check
       @config.merge!( {
@@ -30,7 +30,7 @@ module Ajimi
     end
 
     desc "dir <path>", "Show differences between the source and the target server in the specified directory"
-    option :find_max_depth, :type => :numeric, :default => 1
+    option :find_max_depth, :aliases => "-d", :type => :numeric, :default => 1
     option :ignored_pattern, :type => :string
     def dir(path)
       @config.merge!( {
