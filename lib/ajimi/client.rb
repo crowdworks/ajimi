@@ -4,6 +4,7 @@ module Ajimi
   class Client < Thor
     attr_accessor :checker, :reporter
 
+    default_command :check
     class_option :ajimifile, :default => './Ajimifile', :desc => "Ajimifile path"
     class_option :verbose, :type => :boolean, :default => true
 
@@ -13,7 +14,7 @@ module Ajimi
       @config[:verbose] = options[:verbose] unless options[:verbose].nil?
     end
 
-    desc "check", "Show differences between the source and the target server"
+    desc "[check]", "(Default subcommand) Show differences between the source and the target server"
     option :check_root_path, :type => :string
     option :find_max_depth, :type => :numeric
     option :enable_check_contents, :type => :boolean, :default => false
