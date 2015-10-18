@@ -110,7 +110,7 @@ It takes a subcommand such as `dir` or `exec` (Default subcommnad is `check`).
 To view a list of the available commands , just run `ajimi help` with no arguments:
 
 ```bash
-$ ajimi
+$ ajimi help
 Commands:
   ajimi [check]                         # (Default subcommand) Show differences between the source and the target server
   ajimi dir <path>                    # Show differences between the source and the target server in the specified directory
@@ -154,7 +154,7 @@ Finally, resolve issues and remove `pending_paths` or `pending_contents`.
 ## Command reference
 
 ```bash
-$ ajimi
+$ ajimi help
 Commands:
   ajimi [check]                         # (Default subcommand) Show differences between the source and the target server
   ajimi dir <path>                    # Show differences between the source and the target server in the specified directory
