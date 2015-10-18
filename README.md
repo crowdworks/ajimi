@@ -130,21 +130,21 @@ After setting your Ajimifle, Run the following command in order to verify the SS
     $ ajimi exec source hostname
     $ ajimi exec target hostname
 
-And then, run ajimi command with `--find-max-depth` option:
+And then, run `ajimi` command with `-d` (or `--find-max-depth`) option:
 
-    $ ajimi --find-max-depth=3 > ajimi.log
+    $ ajimi -d 3 > ajimi.log
 
 Check the diffs report in ajimi.log, and add roughly unnecessary paths to `pruned_paths` in Ajimifile.
 
-Next, gradually increasing `find-max-depth=4, 5, ...`,
+Next, gradually increasing the depth `4, 5, ...`,
 
-    $ ajimi --find-max-depth=4 > ajimi.log
+    $ ajimi -d 4 > ajimi.log
 
 Add known differences to `ignored_paths` or `pending_paths`.
 
-After checking the difference of paths, then check the contents of files where the difference has been reported:
+After checking the difference of paths, then run `ajimi` command with `-c` (or `--enable-check-contents`) option to check the contents of files where the difference has been reported:
 
-    $ ajimi --enable-check-contents > ajimi.log
+    $ ajimi -c > ajimi.log
 
 Add known differences to `ignored_contents` or `pending_contents`,
 and repeat until the number of lines of diffs report becomes human-readable.
@@ -175,15 +175,15 @@ Usage:
   ajimi [check]
 
 Options:
-  [--check-root-path=CHECK_ROOT_PATH]
-  [--find-max-depth=N]
-  [--enable-check-contents], [--no-enable-check-contents]
-  [--limit-check-contents=N]
-                                                           # Default: 0
-  [--ajimifile=AJIMIFILE]                                  # Ajimifile path
-                                                           # Default: ./Ajimifile
-  [--verbose], [--no-verbose]
-                                                           # Default: true
+  -r, [--check-root-path=CHECK_ROOT_PATH]
+  -d, [--find-max-depth=N]
+  -c, [--enable-check-contents], [--no-enable-check-contents]
+      [--limit-check-contents=N]
+                                                               # Default: 0
+      [--ajimifile=AJIMIFILE]                                  # Ajimifile path
+                                                               # Default: ./Ajimifile
+      [--verbose], [--no-verbose]
+                                                               # Default: true
 
 (Default subcommand) Show differences between the source and the target server
 ```
@@ -194,13 +194,13 @@ Usage:
   ajimi dir <path>
 
 Options:
-  [--find-max-depth=N]
-                                       # Default: 1
-  [--ignored-pattern=IGNORED_PATTERN]
-  [--ajimifile=AJIMIFILE]              # Ajimifile path
-                                       # Default: ./Ajimifile
-  [--verbose], [--no-verbose]
-                                       # Default: true
+  -d, [--find-max-depth=N]
+                                           # Default: 1
+      [--ignored-pattern=IGNORED_PATTERN]
+      [--ajimifile=AJIMIFILE]              # Ajimifile path
+                                           # Default: ./Ajimifile
+      [--verbose], [--no-verbose]
+                                           # Default: true
 
 Show differences between the source and the target server in the specified directory
 ```
